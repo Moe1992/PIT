@@ -1,6 +1,7 @@
 #pragma once
 
 #include <iostream>
+#include "Faktoren.h"
 
 class Menue
 {

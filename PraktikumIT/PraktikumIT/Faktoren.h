@@ -1,4 +1,7 @@
 #pragma once
+
+#include <iostream>
+
 class Faktoren
 {
 public:
@@ -8,9 +11,10 @@ public:
 	double getTemperatur();
 	short getProzess();
 	void getFaktoren(double& spgFaktor, double& tmpFaktor, double& przFaktor);
-	double setSpannung(double spannung);
-	double setTemperatur(double temperatur);
-	double setProzess(short prozess);
+	void setSpannung(double spg);
+	void setTemperatur(double temp);
+	void setProzess(short prz);
+	void ausgabeFaktoren();
 
 private:
 	double spannung;

@@ -4,6 +4,7 @@ using namespace std;
 
 Menue::Menue(void)
 {
+	Faktoren* meineFaktoren = new Faktoren();
 }
 
 
@@ -20,9 +21,9 @@ void Menue::start()
 		system("cls");
 		menueKopf();
 		cout << "(1) Aeussere Faktoren" << endl;
-		cout << "Spannung [Volt]: " << endl;	//*****Spannung ausgeben
-		cout << "Temperatur [Grad Celsius]: " << endl; //Temperatur ausgeben
-		cout << "Prozess (1=slow, 2=typical, 3=fast): " << endl << endl;
+		//cout << "Spannung [Volt]: " << meineFaktoren->getSpannung() << endl;
+		//cout << "Temperatur [Grad Celsius]: " << meineFaktoren->getTemperatur() << endl;
+		//cout << "Prozess (1=slow, 2=typical, 3=fast): " << meineFaktoren->getProzess() << endl << endl;
 
 		cout << "(2) Bibliothek" << endl;
 		cout << "Pfad zur Bibliotheksdatei: " << endl << endl; //********Pfad ausgeben

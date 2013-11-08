@@ -5,8 +5,8 @@ using namespace std;
 int main(){
 	cout << "Hello World";
 	cout << endl << "Philip ist auch dabei";
-	Menue meinMenue = Menue();
-	meinMenue.start();
+	Menue* meinMenue = new Menue();
+	meinMenue->start();
 
 	return 0;
 }
