@@ -4,7 +4,7 @@ using namespace std;
 
 Menue::Menue(void)
 {
-	Faktoren* meineFaktoren = new Faktoren();
+	Faktoren meineFaktoren = Faktoren();
 }
 
 
@@ -14,16 +14,16 @@ Menue::~Menue(void)
 
 void Menue::start()
 {
-	char input;
+	string input;
 	bool ending = false;
 	while (true)
 	{
 		system("cls");
 		menueKopf();
 		cout << "(1) Aeussere Faktoren" << endl;
-		//cout << "Spannung [Volt]: " << meineFaktoren->getSpannung() << endl;
-		//cout << "Temperatur [Grad Celsius]: " << meineFaktoren->getTemperatur() << endl;
-		//cout << "Prozess (1=slow, 2=typical, 3=fast): " << meineFaktoren->getProzess() << endl << endl;
+		cout << "Spannung [Volt]: " << meineFaktoren.getSpannung() << endl;
+		cout << "Temperatur [Grad Celsius]: " << meineFaktoren.getTemperatur() << endl;
+		cout << "Prozess (1=slow, 2=typical, 3=fast): " << meineFaktoren.getProzess() << endl << endl;
 
 		cout << "(2) Bibliothek" << endl;
 		cout << "Pfad zur Bibliotheksdatei: " << endl << endl; //********Pfad ausgeben
@@ -35,28 +35,36 @@ void Menue::start()
 
 		cout << "(5) Programm beenden" << endl << endl << endl;
 
-		cout << "Waehle einen Menuepunkt und bestaetige mit Enter: ";
-		
-		cin >> input;
+		cout << "Waehle einen Menuepunkt und bestaetige mit Enter:\n";
 
-		switch (input)
+		getline(cin, input);
+		if(input.length() != 1)
 		{
-		case '1':
+			cout << "Bitte geben Sie eine gueltige Zahl ein!" << endl;
+			system("pause");
+		}
+		else
+		{
+			switch (input.at(0))
+			{
+			case '1':
 			break;
-		case '2':
+			case '2':
 			break;
-		case '3':
+			case '3':
 			break;
-		case '4':
+			case '4':
 			break;
-		case '5':
+			case '5':
 			ending = true;
 			//system("stop");
 			break;
-		default:
+			default:
+				cout << "Bitte geben Sie eine gueltige Zahl ein!" << endl;
+				system("pause");
 			break;
+			}
 		}
-
 		if(ending) break;
 	}
 
