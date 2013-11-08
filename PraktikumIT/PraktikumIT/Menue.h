@@ -1,4 +1,7 @@
 #pragma once
+
+#include <iostream>
+
 class Menue
 {
 public:
@@ -12,5 +15,7 @@ private:
 	void schaltwerkMenue();
 	void analyse();
 	void menueKopf();
+
+
 };
 
