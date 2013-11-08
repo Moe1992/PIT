@@ -11,7 +11,13 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="Faktoren.cpp" />
     <ClCompile Include="main.cpp" />
+    <ClCompile Include="Menue.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="Faktoren.h" />
+    <ClInclude Include="Menue.h" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <ProjectGuid>{FADDBB78-3B7F-4362-AAFF-7068AA62FE7A}</ProjectGuid>
@@ -22,7 +28,7 @@
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
     <ConfigurationType>Application</ConfigurationType>
     <UseDebugLibraries>true</UseDebugLibraries>
-    <PlatformToolset>v120</PlatformToolset>
+    <PlatformToolset>v110</PlatformToolset>
     <CharacterSet>Unicode</CharacterSet>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
