@@ -16,20 +16,18 @@ public:
 	void setProzess(short prz);
 	void ausgabeFaktoren();
 
-bool berechneSpannungFaktor(double spg);
-	double spannungFaktor;
-
 private:
 	double spannung;
 	double temperatur;
 	short prozess;
+	double spannungFaktor;
 	double temperaturFaktor;
 	double prozessFaktor;
 	double spannungListe[7][2];
 	double temperaturListe[15][2];
 	double prozessListe[3];
 
-	
+	bool berechneSpannungFaktor(double spg);
 	bool berechneTemperaturFaktor(double temp);
 	bool berechneProzessFaktor(short prz);
 	double berechneFaktor(double wert, double arr[][2], int laenge);

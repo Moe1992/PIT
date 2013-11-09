@@ -104,14 +104,22 @@ void Faktoren::setProzess(short prz)
 
 void Faktoren::ausgabeFaktoren()
 {
-	
+	if (berechneSpannungFaktor(spannung) && berechneTemperaturFaktor(temperatur) && berechneProzessFaktor(prozess))
+	{
+		cout << "Faktoren: KV: " << spannungFaktor << " | KT: " << temperaturFaktor << " | KP: " << prozessFaktor << endl;
+	}
+	else
+	{
+		cout << "Einer oder mehrere Faktoren konnten nicht berechnet werden.\n";
+	}
+	system("pause");
 }
 
 bool Faktoren::berechneSpannungFaktor(double spg)
 {
 	if (spg < spannungListe[0][0] || spg > spannungListe[6][0])
 	{
-		cout << "Die Betriebsspannung liegt ausserhalb des gueltigen Bereichs.\n";
+		cout << "Die Betriebsspannung liegt ausserhalb des g\x81ltigen Bereichs.\n";
 		return false;
 	}
 	else
@@ -123,9 +131,9 @@ bool Faktoren::berechneSpannungFaktor(double spg)
 
 bool Faktoren::berechneTemperaturFaktor(double temp)
 {
-	if (temp < spannungListe[0][0] || temp > spannungListe[14][0])
+	if (temp < temperaturListe[0][0] || temp > temperaturListe[14][0])
 	{
-		cout << "Die Betriebsspannung liegt ausserhalb des gueltigen Bereichs.\n";
+		cout << "Die Betriebstemperatur liegt ausserhalb des g\x81ltigen Bereichs.\n";
 		return false;
 	}
 	else
@@ -150,7 +158,7 @@ bool Faktoren::berechneProzessFaktor(short prz)
 		prozessFaktor = prozessListe[3];
 		break;
 	default:
-		cout << "Ungültiger Prozess\n";
+		cout << "Ung\x81ltiger Prozess\n";
 		return false;
 	}
 	return true;
@@ -191,6 +199,6 @@ double Faktoren::interpolation(double wert, double x1, double y1, double x2, dou
 		double erg=y1+((y2-y1)/(x2-x1))*(wert-x1);
 		return erg;
 	}
-	cout << "Fehler bei der Interpolation: x1 = x2 ist nicht moeglich";
+	cout << "Fehler bei der Interpolation: x1 = x2 ist nicht m\x94glich";
 	return 0;
 }
