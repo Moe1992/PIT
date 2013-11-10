@@ -14,10 +14,14 @@ public:
 
 private:
 	Faktoren meineFaktoren;
+	bool debug;
+	ItivDev_Config* DevPtr;
 
+	void readValuesFromDevice();
 	void faktorenMenue();
 	void bibliothekMenue();
 	void schaltwerkMenue();
+	void debugAendernMenue();
 	void spannungAendernMenue();
 	void temperaturAendernMenue();
 	void prozessAendernMenue();

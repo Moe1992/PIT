@@ -5,6 +5,8 @@ using namespace std;
 Menue::Menue(void)
 {
 	Faktoren meineFaktoren = Faktoren();
+	DevPtr = ItivDev_GetConfigByName("Global\\ITIV_WindowsDevice");
+	debug = false;
 }
 
 
@@ -15,21 +17,24 @@ Menue::~Menue(void)
 void Menue::start()
 {
 	string input;
-	bool ending = false;
 	while (true)
 	{
 		system("cls");
 		menueKopf();
+		if(!debug)
+		{
+			readValuesFromDevice();
+		}
 		cout << "(1) \x8Eu\xE1" << "ere Faktoren" << endl;
-		cout << "Spannung [Volt]: " << meineFaktoren.getSpannung() << endl;
-		cout << "Temperatur [Grad Celsius]: " << meineFaktoren.getTemperatur() << endl;
-		cout << "Prozess (1=slow, 2=typical, 3=fast): " << meineFaktoren.getProzess() << endl << endl;
+		cout << "    Spannung [Volt]:                     " << meineFaktoren.getSpannung() << endl;
+		cout << "    Temperatur [Grad Celsius]:           " << meineFaktoren.getTemperatur() << endl;
+		cout << "    Prozess (1=slow, 2=typical, 3=fast): " << meineFaktoren.getProzess() << endl << endl;
 
 		cout << "(2) Bibliothek" << endl;
-		cout << "Pfad zur Bibliotheksdatei: " << endl << endl; //********Pfad ausgeben
+		cout << "    Pfad zur Bibliotheksdatei: " << endl << endl; //********Pfad ausgeben
 
 		cout << "(3) Schaltwerk" << endl;
-		cout << "Pfad zur Schaltwerksdatei: " << endl << endl; //*******Pfad ausgeben
+		cout << "    Pfad zur Schaltwerksdatei: " << endl << endl; //*******Pfad ausgeben
 
 		cout << "(4) Analyse starten" << endl << endl;
 
@@ -49,40 +54,42 @@ void Menue::start()
 			{
 			case '1':
 				faktorenMenue();
-			break;
+				break;
 			case '2':
-			break;
+				break;
 			case '3':
-			break;
+				break;
 			case '4':
-			break;
+				break;
 			case '5':
-			ending = true;
-			//system("stop");
-			break;
+				goto ende;
+				break;
 			default:
 				cout << "Bitte geben Sie eine g\x81ltige Zahl ein!" << endl;
 				system("pause");
-			break;
+				break;
 			}
 		}
-		if(ending) break;
 	}
-
+ende:;
 }
 
 void Menue::faktorenMenue()
 {
 	string input;
-	bool ending = false;
 	while (true)
 	{
 		system("cls");
 		menueKopf();
 		cout << "\x8Eu\xE1" << "ere Faktoren einstellen" << endl;
-		cout << "(1) Spannung [Volt]: " << meineFaktoren.getSpannung() << endl;
-		cout << "(2) Temperatur [Grad Celsius]: " << meineFaktoren.getTemperatur() << endl;
-		cout << "(3) Prozess (1=slow, 2=typical, 3=fast): " << meineFaktoren.getProzess() << endl;
+		cout << "(0) Debug-Modus aktiviert: ";
+			if(debug) cout << "ja\n"; else cout << "nein\n";
+		if(debug) cout << "(1) "; else cout << "    "; 
+		cout << "Spannung [Volt]:                     " << meineFaktoren.getSpannung() << endl;
+		if(debug) cout << "(2) ";  else cout << "    "; 
+		cout << "Temperatur [Grad Celsius]:           " << meineFaktoren.getTemperatur() << endl;
+		if(debug) cout << "(3) ";  else cout << "    "; 
+		cout << "Prozess (1=slow, 2=typical, 3=fast): " << meineFaktoren.getProzess() << endl;
 		cout << "(4) Ausgabe errechneter Faktoren" << endl;
 		cout << "(5) Hauptmen\x81" << endl << endl;
 		cout << "W\x84hle einen Men\x81punkt und best\x84tige mit Enter:\n";
@@ -93,36 +100,39 @@ void Menue::faktorenMenue()
 
 		if(input.length() != 1)
 		{
-			cout << "Bitte geben Sie eine gueltige Zahl ein!" << endl;
+			cout << "Bitte geben Sie eine g\x81ltige Zahl ein!" << endl;
 			system("pause");
 		}
 		else
 		{
 			switch (input.at(0))
 			{
+			case '0':
+				debugAendernMenue();
+				break;
 			case '1':
-				spannungAendernMenue();
-			break;
+				if(debug) spannungAendernMenue();
+				break;
 			case '2':
-				temperaturAendernMenue();
-			break;
+				if(debug) temperaturAendernMenue();
+				break;
 			case '3':
-				prozessAendernMenue();
-			break;
+				if(debug) prozessAendernMenue();
+				break;
 			case '4':
 				meineFaktoren.ausgabeFaktoren();
-			break;
+				break;
 			case '5':
-			ending = true;
-			break;
+				goto ende;
+				break;
 			default:
-				cout << "Bitte geben Sie eine gueltige Zahl ein" << endl;
+				cout << "Bitte geben Sie eine g\x81ltige Zahl ein" << endl;
 				system("pause");
 			break;
 			}
 		}
-		if(ending) break;
 	}
+ende:;
 }
 
 void Menue::bibliothekMenue()
@@ -133,6 +143,42 @@ void Menue::bibliothekMenue()
 void Menue::schaltwerkMenue()
 {
 	
+}
+
+void Menue::debugAendernMenue()
+{
+	while (true)
+	{
+		string input;
+		system("cls");
+		menueKopf();
+		cout << "Debug-Modus aktivieren? j/n:\n";
+		getline(cin, input);
+		if (input.length() != 1)
+		{
+			cout << "Bitte geben Sie 'j' oder 'n' ein" << endl;
+			system("pause");
+		}
+		else
+		{
+			switch (input.at(0))
+			{
+			case 'j':
+				debug = true;
+				goto ende;
+				break;
+			case 'n':
+				debug = false;
+				goto ende;
+				break;
+			default:
+				cout << "Bitte geben Sie 'j' oder 'n' ein" << endl;
+				system("pause");
+				break;
+			}
+		}
+	}
+ende:;
 }
 
 void Menue::spannungAendernMenue()
@@ -184,7 +230,9 @@ void Menue::prozessAendernMenue()
 	while (true)
 	{
 		string input;
-		cout << "Bitte gib die Bauteiltemperatur an\n";
+		system("cls");
+		menueKopf();
+		cout << "Bitte gib den Prozess an\n(1=slow, 2=typical, 3=fast)\n";
 		getline(cin, input);
 		if (isShort(input))
 		{
@@ -236,4 +284,9 @@ bool Menue::isShort(string arg1)
 		return false;
 	}
 	return false;
+}
+
+void Menue::readValuesFromDevice()
+{
+	volatile uint8_t* device = DevPtr->BaseAddress;
 }

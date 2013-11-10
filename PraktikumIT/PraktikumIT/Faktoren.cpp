@@ -4,9 +4,9 @@ using namespace std;
 
 Faktoren::Faktoren(void)
 {
-	setSpannung(0);
-	setTemperatur(0);
-	setProzess(0);
+	spannung = 0;
+	temperatur = 0;
+	prozess = 0;
 
 	spannungListe[0][0] = 1.08;
 	spannungListe[1][0] = 1.12;
@@ -84,22 +84,27 @@ short Faktoren::getProzess()
 
 void Faktoren::getFaktoren(double& spgFaktor, double& tmpFaktor, double& przFaktor)
 {
-	
+	spgFaktor = spannungFaktor;
+	tmpFaktor = temperaturFaktor;
+	przFaktor = prozessFaktor;
 }
 
 void Faktoren::setSpannung(double spg)
 {
 	spannung = spg;
+	berechneSpannungFaktor(spannung);
 }
 
 void Faktoren::setTemperatur(double temp)
 {
 	temperatur = temp;
+	berechneTemperaturFaktor(temperatur);
 }
 
 void Faktoren::setProzess(short prz)
 {
 	prozess = prz;
+	berechneProzessFaktor(prozess);
 }
 
 void Faktoren::ausgabeFaktoren()
@@ -155,7 +160,7 @@ bool Faktoren::berechneProzessFaktor(short prz)
 		prozessFaktor = prozessListe[1];
 		break;
 	case 3:
-		prozessFaktor = prozessListe[3];
+		prozessFaktor = prozessListe[2];
 		break;
 	default:
 		cout << "Ung\x81ltiger Prozess\n";
