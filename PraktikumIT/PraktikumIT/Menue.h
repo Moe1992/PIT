@@ -2,6 +2,7 @@
 
 #include <iostream>
 #include "Faktoren.h"
+#include "SignalListeErzeuger.h"
 #include <string>
 #include <boost\lexical_cast.hpp>
 
@@ -14,6 +15,7 @@ public:
 
 private:
 	Faktoren meineFaktoren;
+	SignalListeErzeuger meinSignalListeErzeuger;
 	bool debug;
 	ItivDev_Config* DevPtr;
 
@@ -25,6 +27,7 @@ private:
 	void spannungAendernMenue();
 	void temperaturAendernMenue();
 	void prozessAendernMenue();
+	void schaltwerkPfadAendernMenue();
 	void analyse();
 	void menueKopf();
 	bool isNumber(std::string arg1);

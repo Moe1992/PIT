@@ -8,6 +8,7 @@ Faktoren::Faktoren(void)
 	temperatur = 0;
 	prozess = 0;
 
+	//Erzeugen der Listen, aus denen die Faktoren berechnet werden
 	spannungListe[0][0] = 1.08;
 	spannungListe[1][0] = 1.12;
 	spannungListe[2][0] = 1.16;
@@ -107,7 +108,7 @@ void Faktoren::setProzess(short prz)
 	berechneProzessFaktor(prozess);
 }
 
-void Faktoren::ausgabeFaktoren()
+void Faktoren::ausgabeFaktoren()	//Gibt die berechneten Faktoren aus, falls diese ermittelt werden können
 {
 	if (berechneSpannungFaktor(spannung) && berechneTemperaturFaktor(temperatur) && berechneProzessFaktor(prozess))
 	{
@@ -120,7 +121,7 @@ void Faktoren::ausgabeFaktoren()
 	system("pause");
 }
 
-bool Faktoren::berechneSpannungFaktor(double spg)
+bool Faktoren::berechneSpannungFaktor(double spg)	//Prueft, ob die Spannung im gueltigen Bereich ist. Falls ja wird der Faktor ueber berechneFaktor ermittelt
 {
 	if (spg < spannungListe[0][0] || spg > spannungListe[6][0])
 	{
@@ -134,7 +135,7 @@ bool Faktoren::berechneSpannungFaktor(double spg)
 	}
 }
 
-bool Faktoren::berechneTemperaturFaktor(double temp)
+bool Faktoren::berechneTemperaturFaktor(double temp)	//Prueft, ob die Temperatur im gueltigen Bereich ist. Falls ja wird der Faktor ueber berechneFaktor ermittelt
 {
 	if (temp < temperaturListe[0][0] || temp > temperaturListe[14][0])
 	{
@@ -149,7 +150,7 @@ bool Faktoren::berechneTemperaturFaktor(double temp)
 	return true;
 }
 
-bool Faktoren::berechneProzessFaktor(short prz)
+bool Faktoren::berechneProzessFaktor(short prz)	//Weist den Prozesswerten 1, 2 und 3 den Faktor zu. Bei anderer Angabe von Prozess gibt die Konsole eine Fehlermeldung aus
 {
 	switch ((int)prz)
 	{
@@ -171,13 +172,14 @@ bool Faktoren::berechneProzessFaktor(short prz)
 
 double Faktoren::berechneFaktor(double wert, double arr[][2], int laenge)
 {
-	for (int i = 0; i < laenge; i++)
+	for (int i = 0; i < laenge; i++)	//Pfrueft zuerst, ob sich der Wert schon in der Liste befindet. Falls ja, gib den passenden Faktor zurueck
 	{
 		if (wert == arr[i][0])
 		{
 			return arr[i][1];
 		}
 	}
+	//Der Wert wurde nicht in der Liste gefunden, daher muss der Faktor per Interpolation ermittelt werden. Ermittle daher im naechsten Schritt die nacheliegendsten Werte
 	double x1, x2, y1, y2;
 
 	for (int i = 0; i < laenge; i++)
@@ -193,7 +195,7 @@ double Faktoren::berechneFaktor(double wert, double arr[][2], int laenge)
 			y2 = arr[laenge-i-1][1];
 		}
 	}
-	//cout << "Interpolation aufgerufen mit x1 = " << x1 << " x2 = " << x2 << " y1 = " << y1 << " y2 = " << y2 << endl;
+	//Interpolation liefert den Faktor, welcher zurueckgegeben wird
 	return interpolation(wert,x1,y1,x2,y2);
 }
 
@@ -201,7 +203,7 @@ double Faktoren::interpolation(double wert, double x1, double y1, double x2, dou
 {
 	if (x1!=x2)
 	{
-		double erg=y1+((y2-y1)/(x2-x1))*(wert-x1);
+		double erg=y1+((y2-y1)/(x2-x1))*(wert-x1);	//Y(X0) = Y1 + Steigung mal (Entfernung von X0 zu x1)
 		return erg;
 	}
 	cout << "Fehler bei der Interpolation: x1 = x2 ist nicht m\x94glich";
