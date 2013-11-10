@@ -2,6 +2,7 @@
 
 using namespace std;
 
+//Konstruktor zum Erzeugen von Objekten aller Klassen sowie Festlegen der Startwerte
 Menue::Menue(void)
 {
 	Faktoren meineFaktoren = Faktoren();
@@ -11,10 +12,9 @@ Menue::Menue(void)
 }
 
 
-Menue::~Menue(void)
-{
-}
+Menue::~Menue(void){}
 
+//Hauptmenue zur Navigation
 void Menue::start()
 {
 	string input;
@@ -22,27 +22,27 @@ void Menue::start()
 	{
 		system("cls");
 		menueKopf();
-		if(!debug) readValuesFromDevice();
+		if(!debug) readValuesFromDevice();	//Je nach dem ob debug aktiviert ist, werden nun die 3 Groessen gemessen
 
-		cout << "(1) \x8Eu\xE1" << "ere Faktoren" << endl;
+		cout << "(1) \x8Eu\xE1" << "ere Faktoren" << endl;	
 		cout << "    Spannung [Volt]:                     " << meineFaktoren.getSpannung() << endl;
 		cout << "    Temperatur [Grad Celsius]:           " << meineFaktoren.getTemperatur() << endl;
 		cout << "    Prozess (1=slow, 2=typical, 3=fast): " << meineFaktoren.getProzess() << endl << endl;
 
-		cout << "(2) Bibliothek" << endl;
+		cout << "(2) Bibliothek" << endl;	//oeffnet das Menue zum Einstellen der Bibliotheksdatei
 		cout << "    Pfad zur Bibliotheksdatei: " << endl << endl; //********Pfad ausgeben
 
 		cout << "(3) Schaltwerk" << endl;
-		cout << "    Pfad zur Schaltwerksdatei: " << endl << endl; //*******Pfad ausgeben
+		cout << "    Pfad zur Schaltwerksdatei: " << meinSignalListeErzeuger.getPfad() << endl << endl;
 
-		cout << "(4) Analyse starten" << endl << endl;
+		cout << "(4) Analyse starten" << endl << endl;	//startet die Analyse
 
 		cout << "(5) Programm beenden" << endl << endl << endl;
 
 		cout << "W\x84hle einen Men\x81punkt und best\x84tige mit Enter:\n";
 
 		getline(cin, input);
-		if(input.length() != 1)
+		if(input.length() != 1)	//Falls der eingegebene Wert mehr als ein Zeichen besitzt, muss er schon falsch sein!
 		{
 			cout << "Bitte geben Sie eine g\x81ltige Zahl ein!" << endl;
 			system("pause");
@@ -52,17 +52,17 @@ void Menue::start()
 			switch (input.at(0))
 			{
 			case '1':
-				faktorenMenue();
+				faktorenMenue();	//oeffnet das Menue zum Aendern der Faktoren
 				break;
 			case '2':
 				break;
 			case '3':
-				schaltwerkMenue();
+				schaltwerkMenue();	//oeffnet das Menue zum Einstellen der Schaltwerksdatei
 				break;
 			case '4':
 				break;
 			case '5':
-				goto ende;
+				goto ende;			//beendet das Programm
 				break;
 			default:
 				cout << "Bitte geben Sie eine g\x81ltige Zahl ein!" << endl;
@@ -108,22 +108,22 @@ void Menue::faktorenMenue()
 			switch (input.at(0))
 			{
 			case '0':
-				debugAendernMenue();
+				debugAendernMenue();	//oeffnet das Menue zum Aendern des debug-modes
 				break;
 			case '1':
-				if(debug) spannungAendernMenue();
+				if(debug) spannungAendernMenue();	//oeffnet das Menue zum Aendern der Spannung
 				break;
 			case '2':
-				if(debug) temperaturAendernMenue();
+				if(debug) temperaturAendernMenue();	//oeffnet das Menue zum Aendern der Betriebstemperatur
 				break;
 			case '3':
-				if(debug) prozessAendernMenue();
+				if(debug) prozessAendernMenue();	//oeffnet das Menue zum Aendern des Prozesses
 				break;
 			case '4':
-				meineFaktoren.ausgabeFaktoren();
+				meineFaktoren.ausgabeFaktoren();	//lässt die Faktoren ausgeben
 				break;
 			case '5':
-				goto ende;
+				goto ende;	//Kehrt zurück zum Hauptmenue
 				break;
 			default:
 				cout << "Bitte gib eine g\x81ltige Zahl ein" << endl;
@@ -169,10 +169,10 @@ void Menue::schaltwerkMenue()
 			switch (input.at(0))
 			{
 			case '1':
-				schaltwerkPfadAendernMenue();
+				schaltwerkPfadAendernMenue();	//oeffnet das Menue zum Aendern des Pfades zur Schaltwerksdatei
 				break;
 			case '2':
-				meinSignalListeErzeuger.ausgabeDatei();
+				meinSignalListeErzeuger.ausgabeDatei();	//Gibt den Inhalt der Schaltwerksdatei aus
 				system("pause");
 				break;
 			case '3':
@@ -180,7 +180,7 @@ void Menue::schaltwerkMenue()
 			case '4':
 				break;
 			case '5':
-				goto ende;
+				goto ende;	//Kehrt zurueck zum Hauptmenue
 				break;
 			default:
 				break;
