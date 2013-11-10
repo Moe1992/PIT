@@ -5,7 +5,7 @@
 class SchaltwerkElement
 {
 public:
-	SchaltwerkElement(void);
+	SchaltwerkElement(void);//******Gattertyp als Parameter
 	~SchaltwerkElement(void);
 	std::string getName();
 	//******GatterTyp* getTyp();
@@ -27,7 +27,7 @@ private:
 	std::string name;
 	//GatterTyp* typ;
 	double laufzeitEinzelgatter;
-	SchaltwerkElement* nachfolgerElement;
+	SchaltwerkElement* nachfolgerElemente;
 	int anzahlNachfolger;
 	bool isEingangsElement;
 	bool isAusgangsElement;
