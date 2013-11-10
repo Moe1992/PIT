@@ -34,7 +34,8 @@ double SchaltwerkElement::getLaufzeitEinzelgatter()
 
 SchaltwerkElement SchaltwerkElement::getNachfolger(int pos)
 {
-	
+	SchaltwerkElement a;
+	return a;
 }
 
 int SchaltwerkElement::getAnzahlNachfolger()

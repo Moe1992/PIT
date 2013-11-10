@@ -288,5 +288,5 @@ bool Menue::isShort(string arg1)
 
 void Menue::readValuesFromDevice()
 {
-	volatile uint8_t* device = DevPtr->BaseAddress;
+//	volatile uint8_t* device = DevPtr->BaseAddress;
 }
