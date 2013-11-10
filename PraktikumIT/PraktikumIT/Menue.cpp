@@ -5,6 +5,7 @@ using namespace std;
 Menue::Menue(void)
 {
 	Faktoren meineFaktoren = Faktoren();
+	SignalListeErzeuger meinSignalListeErzeuger = SignalListeErzeuger();
 	DevPtr = ItivDev_GetConfigByName("Global\\ITIV_WindowsDevice");
 	debug = false;
 }
@@ -21,10 +22,8 @@ void Menue::start()
 	{
 		system("cls");
 		menueKopf();
-		if(!debug)
-		{
-			readValuesFromDevice();
-		}
+		if(!debug) readValuesFromDevice();
+
 		cout << "(1) \x8Eu\xE1" << "ere Faktoren" << endl;
 		cout << "    Spannung [Volt]:                     " << meineFaktoren.getSpannung() << endl;
 		cout << "    Temperatur [Grad Celsius]:           " << meineFaktoren.getTemperatur() << endl;
@@ -58,6 +57,7 @@ void Menue::start()
 			case '2':
 				break;
 			case '3':
+				schaltwerkMenue();
 				break;
 			case '4':
 				break;
@@ -100,7 +100,7 @@ void Menue::faktorenMenue()
 
 		if(input.length() != 1)
 		{
-			cout << "Bitte geben Sie eine g\x81ltige Zahl ein!" << endl;
+			cout << "Bitte gib eine g\x81ltige Zahl ein!" << endl;
 			system("pause");
 		}
 		else
@@ -126,7 +126,7 @@ void Menue::faktorenMenue()
 				goto ende;
 				break;
 			default:
-				cout << "Bitte geben Sie eine g\x81ltige Zahl ein" << endl;
+				cout << "Bitte gib eine g\x81ltige Zahl ein" << endl;
 				system("pause");
 			break;
 			}
@@ -142,7 +142,52 @@ void Menue::bibliothekMenue()
 
 void Menue::schaltwerkMenue()
 {
-	
+	string input;
+	while (true)
+	{
+		system("cls");
+		menueKopf();
+		cout << "Men\x81 Schaltwerk" << endl;
+		cout << "(1) Pfad zur Schaltwerksdatei: " << meinSignalListeErzeuger.getPfad() << endl;
+		cout << "(2) Ausgabe der Schaltwerksdatei" << endl;
+		cout << "(3) Ausgabe der Signale" << endl;
+		cout << "(4) Ausgabe der Graphstruktur" << endl;
+		cout << "(5) Hauptmen\x81" << endl;
+		cout << "W\x84hle einen Men\x81punkt und best\x84tige mit Enter:\n";
+
+		getline(cin, input);
+		system("cls");
+		menueKopf();
+
+		if(input.length() != 1)
+		{
+			cout << "Bitte gib eine g\x81ltige Zahl ein!" << endl;
+			system("pause");
+		}
+		else
+		{
+			switch (input.at(0))
+			{
+			case '1':
+				schaltwerkPfadAendernMenue();
+				break;
+			case '2':
+				meinSignalListeErzeuger.ausgabeDatei();
+				system("pause");
+				break;
+			case '3':
+				break;
+			case '4':
+				break;
+			case '5':
+				goto ende;
+				break;
+			default:
+				break;
+			}
+		}
+	}
+ende:;
 }
 
 void Menue::debugAendernMenue()
@@ -245,6 +290,28 @@ void Menue::prozessAendernMenue()
 			system("pause");
 		} 
 	}
+}
+
+void Menue::schaltwerkPfadAendernMenue()
+{
+	while (true)
+	{
+		string input;
+		system("cls");
+		menueKopf();
+		cout << "Bitte gib den Pfad zur Schaltwerksdatei an oder schreibe 'exit' um zur\x81" << "ck zu gehen:\n";
+		getline(cin, input);
+		if(input == "exit") goto ende;
+		if (meinSignalListeErzeuger.setPfad(input))
+		{
+			goto ende;
+		}
+		else
+		{
+			cout << "Bitte gib einen g\x81ltigen Pfad an." << endl;
+		}
+	}
+ende:;
 }
 
 void Menue::analyse()
