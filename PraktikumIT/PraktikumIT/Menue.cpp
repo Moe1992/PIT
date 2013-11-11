@@ -176,6 +176,8 @@ void Menue::schaltwerkMenue()
 				system("pause");
 				break;
 			case '3':
+				meinSignalListeErzeuger.ausgabeSignalListe(); //Gibt alle Signale mit Details aus
+				system("pause");
 				break;
 			case '4':
 				break;
