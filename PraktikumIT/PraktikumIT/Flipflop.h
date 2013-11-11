@@ -20,6 +20,7 @@ private:
 	short setupTime;
 	short holdTime;
 	short lastKapazitaetClock;
+	//test
 
 };
 
