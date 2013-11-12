@@ -27,6 +27,9 @@ public:
 	void setAnzahlZiele(int nZiele){
 		anzahlZiele = nZiele;
 	}
+	void incAnzahlZiele(){
+		anzahlZiele++;
+	}
 	void setSignalTyp(signalTypen sigTyp){
 		signalTyp = sigTyp;
 	}

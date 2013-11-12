@@ -26,5 +26,6 @@ private:
 	short anzahlSignale;
 	std::string dateipfad;
 	long frequenz;
+	int sZaehlen(std::string zeile);
 };
 
