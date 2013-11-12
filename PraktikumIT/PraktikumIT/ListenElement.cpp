@@ -12,12 +12,14 @@ ListenElement::~ListenElement(void)
 
 SchaltwerkElement ListenElement::getSchaltwerkElement()
 {
-	
+	SchaltwerkElement a;
+	return a;
 }
 
 ListenElement ListenElement::getNextElement()
 {
-	
+	ListenElement a;
+	return a;
 }
 
 void ListenElement::setSchaltwerkElement(SchaltwerkElement schaltwerkEl)
