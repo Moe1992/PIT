@@ -8,7 +8,7 @@ Menue::Menue(void)
 	Faktoren meineFaktoren = Faktoren();
 	SignalListeErzeuger meinSignalListeErzeuger = SignalListeErzeuger();
 	DevPtr = ItivDev_GetConfigByName("Global\\ITIV_WindowsDevice");
-	debug = false;
+	debug = true;
 }
 
 
@@ -357,5 +357,16 @@ bool Menue::isShort(string arg1)
 
 void Menue::readValuesFromDevice()
 {
-//	volatile uint8_t* device = DevPtr->BaseAddress;
+	//Volt messen
+	do
+	{
+		*((int*)DevPtr->BaseAddress + CTRL_REG) = 0x00000001;
+		while (*((int*)DevPtr->BaseAddress + STAT_REG) != 0x01000000) cout << *((int*)DevPtr->BaseAddress + STAT_REG) << " Geraet nicht bereit\n";
+		*((int*)DevPtr->BaseAddress + CTRL_REG) = 0x00000001;//Channel setzen
+		*((int*)DevPtr->BaseAddress + CTRL_REG) = 0x00000101;//starten mit gesetztem Channel
+		while (*((int*)DevPtr->BaseAddress + STAT_REG) == 0x00000100) cout << "Geraet misst gerade\n"; 
+	} while (*((int*)DevPtr->BaseAddress + STAT_REG) == 0x00010001);
+	double spg = *((int*)DevPtr->BaseAddress + DATA_REG);
+	cout << "Spannugn ist " << spg << endl;
+	cin.get();
 }
