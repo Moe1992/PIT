@@ -132,7 +132,7 @@ void Menue::faktorenMenue()
 			}
 		}
 	}
-ende:;
+ende:;	//Springt hier her
 }
 
 void Menue::bibliothekMenue()
