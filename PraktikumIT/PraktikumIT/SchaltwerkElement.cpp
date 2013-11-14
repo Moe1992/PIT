@@ -32,10 +32,9 @@ double SchaltwerkElement::getLaufzeitEinzelgatter()
 	return laufzeitEinzelgatter;
 }
 
-SchaltwerkElement SchaltwerkElement::getNachfolger(int pos)
+SchaltwerkElement* SchaltwerkElement::getNachfolger(int pos)
 {
-	SchaltwerkElement a;
-	return a;
+	return NULL;
 }
 
 int SchaltwerkElement::getAnzahlNachfolger()
@@ -63,7 +62,7 @@ void SchaltwerkElement::setName(std::string n)
 	name = n;
 }
 
-void SchaltwerkElement::nachfolgerHinzufuegen(SchaltwerkElement schaltwerkElement, int pos)
+void SchaltwerkElement::nachfolgerHinzufuegen(SchaltwerkElement* schaltwerkElement, int pos)
 {
 	
 }

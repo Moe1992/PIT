@@ -7,6 +7,10 @@ Bibliothek::Bibliothek(string pfad)
 	datei = pfad;
 }
 
+Bibliothek::Bibliothek()
+{
+
+}
 
 Bibliothek::~Bibliothek(void)
 {

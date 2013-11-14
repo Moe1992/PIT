@@ -8,6 +8,8 @@ class GraphErzeuger
 public:
 	GraphErzeuger(void);
 	~GraphErzeuger(void);
+	void setBibliothek(Bibliothek* bib);
+
 private:
 	Bibliothek* bibliothek;
 	ListenElement* startElement;

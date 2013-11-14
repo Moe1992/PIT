@@ -10,13 +10,13 @@ public:
 	std::string getName();
 	//******GatterTyp* getTyp();
 	double getLaufzeitEinzelgatter();
-	SchaltwerkElement getNachfolger(int pos);
+	SchaltwerkElement* getNachfolger(int pos);
 	int getAnzahlNachfolger();
 	short getAnzahlEingangssignale();
 	bool getIsEingangsElement();
 	bool getIsAusgangsElement();
 	void setName(std::string n);
-	void nachfolgerHinzufuegen(SchaltwerkElement schaltwerkElement, int pos);
+	void nachfolgerHinzufuegen(SchaltwerkElement* schaltwerkElement, int pos);
 	void setAnzahlNachfolger(int anzahlN);
 	void setAnzahlEingangssignale(short anzahlE);
 	void setIsEingangsElement(bool isEingangsEl);
