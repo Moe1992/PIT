@@ -2,6 +2,7 @@
 
 #include <iostream>
 #include "Faktoren.h"
+#include "Bibliothek.h"
 #include "SignalListeErzeuger.h"
 #include <string>
 #include <boost\lexical_cast.hpp>
@@ -15,6 +16,7 @@ public:
 
 private:
 	Faktoren meineFaktoren;
+	Bibliothek meineBibliothek;
 	SignalListeErzeuger meinSignalListeErzeuger;
 	bool debug;
 	ItivDev_Config* DevPtr;

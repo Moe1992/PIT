@@ -10,6 +10,7 @@ class Bibliothek
 {
 public:
 	Bibliothek(std::string pfad);
+	Bibliothek();
 	~Bibliothek(void);
 	std::string getPfad();
 	GatterTyp* getBibElement(std::string typ);

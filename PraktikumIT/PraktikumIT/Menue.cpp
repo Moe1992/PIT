@@ -6,9 +6,10 @@ using namespace std;
 Menue::Menue(void)
 {
 	Faktoren meineFaktoren = Faktoren();
+	Bibliothek meineBibliothek = Bibliothek("bib.txt");
 	SignalListeErzeuger meinSignalListeErzeuger = SignalListeErzeuger();
 	DevPtr = ItivDev_GetConfigByName("Global\\ITIV_WindowsDevice");
-	debug = false;
+	debug = true;
 }
 
 
@@ -56,6 +57,7 @@ void Menue::start()
 				faktorenMenue();	//oeffnet das Menue zum Aendern der Faktoren
 				break;
 			case '2':
+				bibliothekMenue();
 				break;
 			case '3':
 				schaltwerkMenue();	//oeffnet das Menue zum Einstellen der Schaltwerksdatei
@@ -139,7 +141,12 @@ ende:;	//Springt hier her
 
 void Menue::bibliothekMenue()
 {
-
+	system("cls");
+	meineBibliothek.dateiAusgabe();
+	system("pause");
+	system("cls");
+	meineBibliothek.dateiAuswerten();
+	system("pause");
 }
 
 void Menue::schaltwerkMenue()
@@ -360,10 +367,7 @@ bool Menue::isShort(string arg1)
 
 void Menue::readValuesFromDevice()
 {
-	if (true)
-	{
-
-	}
+	try{
 	//Spannung messen
 	do
 	{
@@ -412,4 +416,7 @@ void Menue::readValuesFromDevice()
 	while (*((int*)(DevPtr->BaseAddress + STAT_REG)) != 0x00010000){}
 	meineFaktoren.setProzess( *((int*)(DevPtr->BaseAddress + DATA_REG)) );
 
+	}
+	catch(exception e){}
+	
 }
