@@ -10,24 +10,22 @@ ListenElement::~ListenElement(void)
 {
 }
 
-SchaltwerkElement ListenElement::getSchaltwerkElement()
+SchaltwerkElement* ListenElement::getSchaltwerkElement()
 {
-	SchaltwerkElement a;
-	return a;
+	return NULL;
 }
 
-ListenElement ListenElement::getNextElement()
+ListenElement* ListenElement::getNextElement()
 {
-	ListenElement a;
-	return a;
+	return NULL;
 }
 
-void ListenElement::setSchaltwerkElement(SchaltwerkElement schaltwerkEl)
+void ListenElement::setSchaltwerkElement(SchaltwerkElement* schaltwerkEl)
 {
 	
 }
 
-void ListenElement::setNextElement(ListenElement nextEl)
+void ListenElement::setNextElement(ListenElement* nextEl)
 {
 	
 }
