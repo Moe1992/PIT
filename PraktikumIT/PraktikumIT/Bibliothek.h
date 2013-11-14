@@ -20,7 +20,7 @@ public:
 	bool pfadEinlesen(std::string pfad);
 	
 private:
-	vector<GatterTyp*> bibElemente;
+	std::vector<GatterTyp*> bibElemente;
 	std::string datei;
 	void openError();
 	void readError();
