@@ -141,6 +141,7 @@ ende:;	//Springt hier her
 
 void Menue::bibliothekMenue()
 {
+	meineBibliothek.pfadEinlesen("bib.txt");
 	system("cls");
 	meineBibliothek.dateiAusgabe();
 	system("pause");
