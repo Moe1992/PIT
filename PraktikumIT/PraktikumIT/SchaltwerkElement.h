@@ -1,14 +1,16 @@
 #pragma once
 #include <iostream>
 #include <string>
+#include "GatterTyp.h"
 
 class SchaltwerkElement
 {
 public:
-	SchaltwerkElement(void);//******Gattertyp als Parameter
+	SchaltwerkElement(void);
+	SchaltwerkElement(GatterTyp* gTyp);
 	~SchaltwerkElement(void);
 	std::string getName();
-	//******GatterTyp* getTyp();
+	GatterTyp* getTyp();
 	double getLaufzeitEinzelgatter();
 	SchaltwerkElement* getNachfolger(int pos);
 	int getAnzahlNachfolger();
@@ -25,9 +27,9 @@ public:
 
 private:
 	std::string name;
-	//GatterTyp* typ;
+	GatterTyp* typ;
 	double laufzeitEinzelgatter;
-	SchaltwerkElement* nachfolgerElemente;
+	(SchaltwerkElement*)* nachfolgerElemente; //statisches Array verwenden? max 5 Ziele
 	int anzahlNachfolger;
 	bool isEingangsElement;
 	bool isAusgangsElement;

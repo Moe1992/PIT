@@ -45,11 +45,12 @@ void GraphErzeuger::erzeugeVerketteteListe()
 					endElement->setNextElement(NULL); 
 				}
 
-				endElement->setSchaltwerkElement(new SchaltwerkElement());
-				GatterTyp* temp = bibliothek->getBibElement(signale[i].getQuellenTyp());//der Gattertyp muss später im Konstruktor von SchaltwerkElement
-																						//übergeben werden.
+				
+				GatterTyp* temp = bibliothek->getBibElement(signale[i].getQuellenTyp()); //der Gattertyp
+				endElement->setSchaltwerkElement(new SchaltwerkElement(temp));			//wird direkt an den Konstruktor übergeben
+				
 				//setzen der Attribute von SchaltwerkElement
-				//endElement->getSchaltwerkElement()->setName(....) wie komme ich an den Namen?
+				endElement->getSchaltwerkElement()->setName(signale[i].getQuelle());	//Gattername wird gesetzt
 				if (signale[i].getSignalTyp() == ausgang)
 				{
 					endElement->getSchaltwerkElement()->setIsAusgangsElement(true);

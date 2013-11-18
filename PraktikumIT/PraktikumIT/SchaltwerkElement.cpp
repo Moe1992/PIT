@@ -11,6 +11,16 @@ SchaltwerkElement::SchaltwerkElement(void)
 	isAusgangsElement = NULL;
 	anzahlEingangssignale = 0;
 }
+SchaltwerkElement::SchaltwerkElement(GatterTyp* gTyp){
+	typ = gTyp;
+	name = "";
+	laufzeitEinzelgatter = 0;
+	nachfolgerElemente = NULL;
+	anzahlNachfolger = 0;
+	isEingangsElement = NULL;
+	isAusgangsElement = NULL;
+	anzahlEingangssignale = 0;
+}
 
 
 SchaltwerkElement::~SchaltwerkElement(void)
@@ -22,11 +32,11 @@ std::string SchaltwerkElement::getName()
 	return name;
 }
 
-/*GatterTyp* SchaltwerkElement::getTyp()
+GatterTyp* SchaltwerkElement::getTyp()
 {
-	
+	return typ;
 }
-*/
+
 double SchaltwerkElement::getLaufzeitEinzelgatter()
 {
 	return laufzeitEinzelgatter;
@@ -34,7 +44,7 @@ double SchaltwerkElement::getLaufzeitEinzelgatter()
 
 SchaltwerkElement* SchaltwerkElement::getNachfolger(int pos)
 {
-	return NULL;
+	return nachfolgerElemente[pos];								
 }
 
 int SchaltwerkElement::getAnzahlNachfolger()
@@ -64,12 +74,13 @@ void SchaltwerkElement::setName(std::string n)
 
 void SchaltwerkElement::nachfolgerHinzufuegen(SchaltwerkElement* schaltwerkElement, int pos)
 {
-	
+	nachfolgerElemente[pos] = schaltwerkElement;
 }
 
 void SchaltwerkElement::setAnzahlNachfolger(int anzahlN)
 {
 	anzahlNachfolger = anzahlN;
+	nachfolgerElemente = new SchaltwerkElement*[anzahlNachfolger]; //ueberfluessig falls statisches Array mit 5 Elementen
 }
 
 void SchaltwerkElement::setAnzahlEingangssignale(short anzahlE)
