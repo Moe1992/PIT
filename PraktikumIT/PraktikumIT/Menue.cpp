@@ -19,7 +19,10 @@ Menue::~Menue(void){}
 void Menue::start()
 {
 	string input;
-	if(!debug) readValuesFromDevice();	//Je nach dem ob debug aktiviert ist, werden nun die 3 Groessen gemessen
+	if(!debug) //Je nach dem ob debug aktiviert ist, werden nun die 3 Groessen gemessen
+	{
+		readValuesFromDevice();
+	}	
 
 	while (true)
 	{
@@ -188,6 +191,9 @@ void Menue::schaltwerkMenue()
 			case '3':
 				meinSignalListeErzeuger.ausgabeSignalListe(); //Gibt alle Signale mit Details aus
 				system("pause");
+				mySignal =  meinSignalListeErzeuger.erzeugeListe();
+				mySignal[9];
+				mySignal[10];
 				break;
 			case '4':
 				break;
@@ -225,8 +231,10 @@ void Menue::debugAendernMenue()
 				goto ende;
 				break;
 			case 'n':
-				debug = false;
-				readValuesFromDevice();
+				if (readValuesFromDevice())
+				{
+					debug = false;
+				}
 				goto ende;
 				break;
 			default:
@@ -366,58 +374,65 @@ bool Menue::isShort(string arg1)
 	return false;
 }
 
-void Menue::readValuesFromDevice()
+bool Menue::readValuesFromDevice()
 {
-	try{
-	//Spannung messen
-	do
+	if (DevPtr != 0)
 	{
-		*((int*)(DevPtr->BaseAddress + CTRL_REG)) = 0x00000001;//channel setzen
-		while (*((int*)(DevPtr->BaseAddress + STAT_REG)) != 0x01000000)
+		//Spannung messen
+		do
 		{
-			cout << *((int*)DevPtr->BaseAddress + STAT_REG) << " Geraet nicht bereit\n";
-		}
-		*((int*)(DevPtr->BaseAddress + CTRL_REG)) = 0x00000101;//starten mit gesetztem Channel
-		while (*((int*)(DevPtr->BaseAddress + STAT_REG)) == 0x00000100){
-			cout << "Geraet misst gerade\n"; 
-		} 
-	} while (*((int*)(DevPtr->BaseAddress + STAT_REG)) == 0x00010001);
-	while (*((int*)(DevPtr->BaseAddress + STAT_REG)) != 0x00010000){}
-	meineFaktoren.setSpannung( *((double*)(DevPtr->BaseAddress + DATA_REG)) );
+			*((int*)(DevPtr->BaseAddress + CTRL_REG)) = 0x00000001;//channel setzen
+			while (*((int*)(DevPtr->BaseAddress + STAT_REG)) != 0x01000000)
+			{
+				cout << *((int*)DevPtr->BaseAddress + STAT_REG) << " Geraet nicht bereit\n";
+			}
+			*((int*)(DevPtr->BaseAddress + CTRL_REG)) = 0x00000101;//starten mit gesetztem Channel
+			while (*((int*)(DevPtr->BaseAddress + STAT_REG)) == 0x00000100){
+				cout << "Geraet misst gerade\n"; 
+			} 
+		} while (*((int*)(DevPtr->BaseAddress + STAT_REG)) == 0x00010001);
+		while (*((int*)(DevPtr->BaseAddress + STAT_REG)) != 0x00010000){}
+		meineFaktoren.setSpannung( *((double*)(DevPtr->BaseAddress + DATA_REG)) );
 
-	//Temperatur messsen
-	do
+		//Temperatur messsen
+		do
+		{
+			*((int*)(DevPtr->BaseAddress + CTRL_REG)) = 0x00000002;//channel setzen
+			while (*((int*)(DevPtr->BaseAddress + STAT_REG)) != 0x01000000)
+			{
+				cout << *((int*)DevPtr->BaseAddress + STAT_REG) << " Geraet nicht bereit\n";
+			}
+			*((int*)(DevPtr->BaseAddress + CTRL_REG)) = 0x00000102;//starten mit gesetztem Channel
+			while (*((int*)(DevPtr->BaseAddress + STAT_REG)) == 0x00000100){
+				cout << "Geraet misst gerade\n"; 
+			} 
+		} while (*((int*)(DevPtr->BaseAddress + STAT_REG)) == 0x00010001);
+		while (*((int*)(DevPtr->BaseAddress + STAT_REG)) != 0x00010000){}
+		meineFaktoren.setTemperatur( *((int*)(DevPtr->BaseAddress + DATA_REG)) );
+
+		//Prozess setzen
+		do
+		{
+			*((int*)(DevPtr->BaseAddress + CTRL_REG)) = 0x00000003;//channel setzen
+			while (*((int*)(DevPtr->BaseAddress + STAT_REG)) != 0x01000000)
+			{
+				cout << *((int*)DevPtr->BaseAddress + STAT_REG) << " Geraet nicht bereit\n";
+			}
+			*((int*)(DevPtr->BaseAddress + CTRL_REG)) = 0x00000103;//starten mit gesetztem Channel
+			while (*((int*)(DevPtr->BaseAddress + STAT_REG)) == 0x00000100){
+				cout << "Geraet misst gerade\n"; 
+			} 
+		} while (*((int*)(DevPtr->BaseAddress + STAT_REG)) == 0x00010001);
+		while (*((int*)(DevPtr->BaseAddress + STAT_REG)) != 0x00010000){}
+		meineFaktoren.setProzess( *((int*)(DevPtr->BaseAddress + DATA_REG)) ); 
+
+		return true;
+	}//Ende if-Geraet-angeschaltet
+	else
 	{
-		*((int*)(DevPtr->BaseAddress + CTRL_REG)) = 0x00000002;//channel setzen
-		while (*((int*)(DevPtr->BaseAddress + STAT_REG)) != 0x01000000)
-		{
-			cout << *((int*)DevPtr->BaseAddress + STAT_REG) << " Geraet nicht bereit\n";
-		}
-		*((int*)(DevPtr->BaseAddress + CTRL_REG)) = 0x00000102;//starten mit gesetztem Channel
-		while (*((int*)(DevPtr->BaseAddress + STAT_REG)) == 0x00000100){
-			cout << "Geraet misst gerade\n"; 
-		} 
-	} while (*((int*)(DevPtr->BaseAddress + STAT_REG)) == 0x00010001);
-	while (*((int*)(DevPtr->BaseAddress + STAT_REG)) != 0x00010000){}
-	meineFaktoren.setTemperatur( *((int*)(DevPtr->BaseAddress + DATA_REG)) );
-
-	//Prozess setzen
-	do
-	{
-		*((int*)(DevPtr->BaseAddress + CTRL_REG)) = 0x00000003;//channel setzen
-		while (*((int*)(DevPtr->BaseAddress + STAT_REG)) != 0x01000000)
-		{
-			cout << *((int*)DevPtr->BaseAddress + STAT_REG) << " Geraet nicht bereit\n";
-		}
-		*((int*)(DevPtr->BaseAddress + CTRL_REG)) = 0x00000103;//starten mit gesetztem Channel
-		while (*((int*)(DevPtr->BaseAddress + STAT_REG)) == 0x00000100){
-			cout << "Geraet misst gerade\n"; 
-		} 
-	} while (*((int*)(DevPtr->BaseAddress + STAT_REG)) == 0x00010001);
-	while (*((int*)(DevPtr->BaseAddress + STAT_REG)) != 0x00010000){}
-	meineFaktoren.setProzess( *((int*)(DevPtr->BaseAddress + DATA_REG)) );
-
+		cout << "Die Ger\x84tesimulation ist noch nicht gestartet.\n";
+		system("pause");
+		return false;
 	}
-	catch(exception e){}
 	
 }

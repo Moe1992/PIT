@@ -20,8 +20,9 @@ private:
 	SignalListeErzeuger meinSignalListeErzeuger;
 	bool debug;
 	ItivDev_Config* DevPtr;
+	Signal* mySignal;
 
-	void readValuesFromDevice();
+	bool readValuesFromDevice();
 	void faktorenMenue();
 	void bibliothekMenue();
 	void schaltwerkMenue();
