@@ -18,6 +18,9 @@ public:
 	void setLastFaktor(short lf);
 	void setLastKapazitaet(short lk);
 	void setEingaenge(short ei);
+	virtual void setSetupTime(short st);
+	virtual void setHoldTime(short ht);
+	virtual void setLastKapazitaetClock(short lkc);
 
 protected:
 	std::string name;

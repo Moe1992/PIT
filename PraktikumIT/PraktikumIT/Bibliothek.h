@@ -5,6 +5,7 @@
 #include <fstream>
 #include <iostream>
 #include "GatterTyp.h"
+#include "Flipflop.h"
 
 class Bibliothek
 {
@@ -19,7 +20,7 @@ public:
 	bool pfadEinlesen(std::string pfad);
 	
 private:
-	//vector<GatterTyp> bibElemente;
+	std::vector<GatterTyp*> bibElemente;
 	std::string datei;
 	void openError();
 	void readError();

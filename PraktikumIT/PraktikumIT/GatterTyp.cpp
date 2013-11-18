@@ -66,3 +66,18 @@ void GatterTyp::setEingaenge(short ei)
 {
 	eingaenge = ei;
 }
+
+void GatterTyp::setSetupTime(short st)
+{
+
+}
+
+void GatterTyp::setHoldTime(short ht)
+{
+	
+}
+
+void GatterTyp::setLastKapazitaetClock(short lkc)
+{
+	
+}
