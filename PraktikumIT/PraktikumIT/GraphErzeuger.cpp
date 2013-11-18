@@ -27,7 +27,8 @@ void GraphErzeuger::erzeugeVerketteteListe()
 	if (signale != NULL)//Falls die Signalliste erzeugt wurde
 	{
 		zaehleSignale();
-		for (int i = 0; i < anzahlSignale; i++)
+		for (int i = 0; i < anzahlSignale; i++) //Nach Durchlauf der Schleife ist die gesamte Liste erstellt. Es müssen aber nachträglich noch manche Attribute
+												//der SchaltwerkElemente gesetzt werden.
 		{
 			if (signale[i].getSignalTyp() != eingang) //Handelt es sich nicht um ein Einganssignal, so gibt es ein Quellgatter
 			{
@@ -43,11 +44,23 @@ void GraphErzeuger::erzeugeVerketteteListe()
 					endElement = endElement->getNextElement();
 					endElement->setNextElement(NULL); 
 				}
+
 				endElement->setSchaltwerkElement(new SchaltwerkElement());
 				GatterTyp* temp = bibliothek->getBibElement(signale[i].getQuellenTyp());//der Gattertyp muss später im Konstruktor von SchaltwerkElement
 																						//übergeben werden.
+				//setzen der Attribute von SchaltwerkElement
+				//endElement->getSchaltwerkElement()->setName(....) wie komme ich an den Namen?
+				if (signale[i].getSignalTyp() == ausgang)
+				{
+					endElement->getSchaltwerkElement()->setIsAusgangsElement(true);
+				}
+				else
+				{
+					endElement->getSchaltwerkElement()->setIsAusgangsElement(false);
+				}
+				endElement->getSchaltwerkElement()->setIsEingangsElement(false);
 			}
-		}
+		}//ende for-Schleife
 	}
 }
 
