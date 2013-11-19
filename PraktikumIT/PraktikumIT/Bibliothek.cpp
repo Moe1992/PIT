@@ -21,10 +21,20 @@ string Bibliothek::getPfad()
 	return datei;
 }
 
-/*GatterTyp* Bibliothek::getBibElement(string typ)
+GatterTyp* Bibliothek::getBibElement(string typ)
 {
-
-}*/
+	GatterTyp* zeiger;
+	bool fund;
+	for(int i = 0 ; i < bibElemente.size(); i++)
+	{
+		if(typ == bibElemente.at(i)->getName())
+		{
+			zeiger = bibElemente.at(i);
+			fund = 1;
+		}
+	}
+	return zeiger; //Fund-abfrage einbauen?
+}
 
 void Bibliothek::dateiAusgabe()
 {
