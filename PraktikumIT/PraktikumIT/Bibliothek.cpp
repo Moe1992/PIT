@@ -31,6 +31,7 @@ GatterTyp* Bibliothek::getBibElement(string typ)
 		{
 			zeiger = bibElemente.at(i);
 			fund = 1;
+			i = bibElemente.size();
 		}
 	}
 	return zeiger; //Fund-abfrage einbauen?
@@ -104,10 +105,29 @@ void Bibliothek::dateiAuswerten()
 				string temp = zeile.substr(3);
 				bibElemente.at(gatterNr)->setLastKapazitaetClock(atof(temp.c_str()));
 				gatterNr++;
+			} else if(zeile.find("ed:") == 0)
+			{
+				string temp = zeile.substr(3);
+				bibElemente.at(gatterNr)->setEingaenge(atof(temp.c_str()));
+			} else if(zeile.find("cd:") == 0)
+			{
+				string temp = zeile.substr(3);
+				bibElemente.at(gatterNr)->setLastKapazitaet(atof(temp.c_str()));
+			} else if(zeile.find("et:") == 0)
+			{
+				//unvollständig, fragen!
+			} else if(zeile.find("tpdt:") == 0)
+			{
+				string temp = zeile.substr(5);
+				bibElemente.at(gatterNr)->setGrundLaufzeit(atof(temp.c_str()));
 			}
+			
 		}
 	}
-	
+	if(bibElemente.size() == 0)
+	{
+		readError();
+	}
 }
 
 bool Bibliothek::pfadEinlesen(string pfad)
