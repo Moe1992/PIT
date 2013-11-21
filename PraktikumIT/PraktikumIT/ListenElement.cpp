@@ -12,20 +12,20 @@ ListenElement::~ListenElement(void)
 
 SchaltwerkElement* ListenElement::getSchaltwerkElement()
 {
-	return NULL;
+	return schaltwerkElement;
 }
 
 ListenElement* ListenElement::getNextElement()
 {
-	return NULL;
+	return next;
 }
 
 void ListenElement::setSchaltwerkElement(SchaltwerkElement* schaltwerkEl)
 {
-	
+	schaltwerkElement = schaltwerkEl;
 }
 
 void ListenElement::setNextElement(ListenElement* nextEl)
 {
-	
+	next = nextEl;
 }

@@ -6,6 +6,7 @@
 #include "SignalListeErzeuger.h"
 #include <string>
 #include <boost\lexical_cast.hpp>
+#include "GraphErzeuger.h"
 
 class Menue
 {
@@ -18,6 +19,7 @@ private:
 	Faktoren meineFaktoren;
 	Bibliothek meineBibliothek;
 	SignalListeErzeuger meinSignalListeErzeuger;
+	GraphErzeuger meinGraphErzeuger;
 	bool debug;
 	ItivDev_Config* DevPtr;
 	Signal* mySignal;

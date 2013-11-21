@@ -8,6 +8,7 @@ Menue::Menue(void)
 	Faktoren meineFaktoren = Faktoren();
 	Bibliothek meineBibliothek = Bibliothek("bib.txt");
 	SignalListeErzeuger meinSignalListeErzeuger = SignalListeErzeuger();
+	GraphErzeuger meinGraphErzeuger = GraphErzeuger();
 	DevPtr = ItivDev_GetConfigByName("Global\\ITIV_WindowsDevice");
 	debug = true;
 }
@@ -191,11 +192,13 @@ void Menue::schaltwerkMenue()
 			case '3':
 				meinSignalListeErzeuger.ausgabeSignalListe(); //Gibt alle Signale mit Details aus
 				system("pause");
-				mySignal =  meinSignalListeErzeuger.erzeugeListe();
-				mySignal[9];
-				mySignal[10];
 				break;
 			case '4':
+				meinGraphErzeuger.setSignalListe(meinSignalListeErzeuger.erzeugeListe());
+				meinGraphErzeuger.setBibliothek(&meineBibliothek);
+				meinGraphErzeuger.erzeugeVerketteteListe();
+				meinGraphErzeuger.erzeugeGraph();
+				meinGraphErzeuger.ausgabeGraphstruktur();
 				break;
 			case '5':
 				goto ende;	//Kehrt zurueck zum Hauptmenue
