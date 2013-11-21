@@ -5,10 +5,10 @@ using namespace std;
 //Konstruktor zum Erzeugen von Objekten aller Klassen sowie Festlegen der Startwerte
 Menue::Menue(void)
 {
-	Faktoren meineFaktoren = Faktoren();
-	Bibliothek meineBibliothek = Bibliothek("bib.txt");
-	SignalListeErzeuger meinSignalListeErzeuger = SignalListeErzeuger();
-	GraphErzeuger meinGraphErzeuger = GraphErzeuger();
+	meineFaktoren = Faktoren();
+	meineBibliothek = Bibliothek("bib.txt");
+	meinSignalListeErzeuger = SignalListeErzeuger();
+	meinGraphErzeuger = GraphErzeuger();
 	DevPtr = ItivDev_GetConfigByName("Global\\ITIV_WindowsDevice");
 	debug = true;
 }
@@ -36,9 +36,9 @@ void Menue::start()
 		cout << "    Prozess (1=slow, 2=typical, 3=fast): " << meineFaktoren.getProzess() << endl << endl;
 
 		cout << "(2) Bibliothek" << endl;	//oeffnet das Menue zum Einstellen der Bibliotheksdatei
-		cout << "    Pfad zur Bibliotheksdatei: " << endl << endl; //********Pfad ausgeben
+		cout << "    Pfad zur Bibliotheksdatei: " << meineBibliothek.getPfad() << endl << endl;
 
-		cout << "(3) Schaltwerk" << endl;
+		cout << "(3) Schaltwerk" << endl;	//oeffnet das Menue zum Einstellen der Schaltwerksdatei
 		cout << "    Pfad zur Schaltwerksdatei: " << meinSignalListeErzeuger.getPfad() << endl << endl;
 
 		cout << "(4) Analyse starten" << endl << endl;	//startet die Analyse
@@ -79,7 +79,7 @@ void Menue::start()
 		}
 	}
 ende:
-	ItivDev_ReleaseDevice(DevPtr);
+	if (DevPtr != 0) ItivDev_ReleaseDevice(DevPtr);
 }
 
 void Menue::faktorenMenue()
@@ -145,6 +145,44 @@ ende:;	//Springt hier her
 
 void Menue::bibliothekMenue()
 {
+	string input;
+	while (true)
+	{
+		system("cls");
+		menueKopf();
+		cout << "Men\x81 Bibliothek" << endl;
+		cout << "(1) Pfad zur Bibliotheksdatei: " << meineBibliothek.getPfad() << endl;
+		cout << "(2) Ausgabe der Bibliotheksdatei" << endl;
+		cout << "(3) Hauptmen\x81" << endl;
+
+		getline(cin, input);
+		system("cls");
+		menueKopf();
+
+		if(input.length() != 1)
+		{
+			cout << "Bitte gib eine g\x81ltige Zahl ein!" << endl;
+			system("pause");
+		}
+		else
+		{
+			switch (input.at(0))
+			{
+			case '1':
+				bibliothekPfadAendernMenue();
+				break;
+			case '2':
+				meineBibliothek.dateiAusgabe();
+				meineBibliothek.dateiAuswerten();
+				break;
+			case '3':
+				goto ende;
+				break;
+			default:
+				break;
+			}
+		}
+	}
 	meineBibliothek.pfadEinlesen("bib.txt");
 	system("cls");
 	meineBibliothek.dateiAusgabe();
@@ -152,6 +190,7 @@ void Menue::bibliothekMenue()
 	system("cls");
 	meineBibliothek.dateiAuswerten();
 	system("pause");
+ende:;
 }
 
 void Menue::schaltwerkMenue()
@@ -318,9 +357,9 @@ void Menue::prozessAendernMenue()
 
 void Menue::schaltwerkPfadAendernMenue()
 {
+	string input;
 	while (true)
 	{
-		string input;
 		system("cls");
 		menueKopf();
 		cout << "Bitte gib den Pfad zur Schaltwerksdatei an oder schreibe 'exit' um zur\x81" << "ck zu gehen:\n";
@@ -333,6 +372,30 @@ void Menue::schaltwerkPfadAendernMenue()
 		else
 		{
 			cout << "Bitte gib einen g\x81ltigen Pfad an." << endl;
+			system("pause");
+		}
+	}
+ende:;
+}
+
+void Menue::bibliothekPfadAendernMenue()
+{
+	string input;
+	while (true)
+	{
+		system("cls");
+		menueKopf();
+		cout << "Bitte gib den Pfad zur Bibliotheksdatei an oder schreibe 'exit' um zur\x81" << "ck zu gehen:\n";
+		getline(cin, input);
+		if(input == "exit") goto ende;
+		if (meineBibliothek.pfadEinlesen(input))
+		{
+			goto ende;
+		}
+		else
+		{
+			cout << "Bitte gib einen g\x81ltigen Pfad an." << endl;
+			system("pause");
 		}
 	}
 ende:;
@@ -437,5 +500,5 @@ bool Menue::readValuesFromDevice()
 		system("pause");
 		return false;
 	}
-	
+
 }

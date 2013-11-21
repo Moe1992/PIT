@@ -48,6 +48,7 @@ void Bibliothek::dateiAusgabe()
 	} else {
 		openError();
 	}
+	system("pause");
 }
 
 void Bibliothek::dateiAuswerten()
@@ -126,6 +127,7 @@ bool Bibliothek::pfadEinlesen(string pfad)
 	ifstream bib(datei.c_str());
 	if(bib)
 	{
+		bib.close();
 		return 1;
 	} else 
 	{

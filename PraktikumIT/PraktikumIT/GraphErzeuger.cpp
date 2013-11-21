@@ -76,7 +76,7 @@ void GraphErzeuger::erzeugeVerketteteListe()
 						endElement->getSchaltwerkElement()->setIsEingangsElement(false);
 					}
 					//LaufzeitEinzelgatter einstellen
-					endElement->getSchaltwerkElement()->setLaufzeitEinzelgatter(bibliothek->getBibElement(signale[i].getQuelle())->getGrundLaufzeit());
+					endElement->getSchaltwerkElement()->setLaufzeitEinzelgatter(bibliothek->getBibElement(signale[i].getQuellenTyp())->getGrundLaufzeit());
 					// 
 				}
 			}
@@ -154,14 +154,18 @@ void GraphErzeuger::ausgabeGraphstruktur()
 	{
 		int anzahlNachfolger = tempLE->getSchaltwerkElement()->getAnzahlNachfolger();
 		cout << "Gattername: " << tempLE->getSchaltwerkElement()->getName() << endl;
-		cout << "Gattertyp: " << tempLE->getSchaltwerkElement()->getTyp() << endl;
+		cout << "Gattertyp: " << tempLE->getSchaltwerkElement()->getTyp()->getName() << endl;
 		cout << "--> Das Gatter hat " << anzahlNachfolger << (anzahlNachfolger == 1 ? " Ziel" : " Ziele") << endl;
 		cout << "Angeschlossene Gatter:";
 		for (int j = 0; j < anzahlNachfolger; j++)
 		{
 			cout << " " << tempLE->getSchaltwerkElement()->getNachfolger(j)->getName();
 		}
+		cout << endl << endl;
+
+		tempLE = tempLE->getNextElement();
 	}
+	system("pause");
 }
 
 ListenElement* GraphErzeuger::getStartElement()

@@ -4,7 +4,7 @@ using namespace std;
 
 SignalListeErzeuger::SignalListeErzeuger()
 {
-	dateipfad = "voll.txt";
+	dateipfad = "csd.txt";
 }
 
 

@@ -33,6 +33,7 @@ private:
 	void temperaturAendernMenue();
 	void prozessAendernMenue();
 	void schaltwerkPfadAendernMenue();
+	void bibliothekPfadAendernMenue();
 	void analyse();
 	void menueKopf();
 	bool isNumber(std::string arg1);
