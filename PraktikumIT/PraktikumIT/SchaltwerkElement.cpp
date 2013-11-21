@@ -5,7 +5,6 @@ SchaltwerkElement::SchaltwerkElement(void)
 {
 	name = "";
 	laufzeitEinzelgatter = 0;
-	nachfolgerElemente = NULL;
 	anzahlNachfolger = 0;
 	isEingangsElement = NULL;
 	isAusgangsElement = NULL;
@@ -15,7 +14,6 @@ SchaltwerkElement::SchaltwerkElement(GatterTyp* gTyp){
 	typ = gTyp;
 	name = "";
 	laufzeitEinzelgatter = 0;
-	nachfolgerElemente = NULL;
 	anzahlNachfolger = 0;
 	isEingangsElement = NULL;
 	isAusgangsElement = NULL;
@@ -80,7 +78,7 @@ void SchaltwerkElement::nachfolgerHinzufuegen(SchaltwerkElement* schaltwerkEleme
 void SchaltwerkElement::setAnzahlNachfolger(int anzahlN)
 {
 	anzahlNachfolger = anzahlN;
-	nachfolgerElemente = new SchaltwerkElement*[anzahlNachfolger]; //ueberfluessig falls statisches Array mit 5 Elementen
+	//nachfolgerElemente = new SchaltwerkElement*[anzahlNachfolger]; //ueberfluessig falls statisches Array mit 5 Elementen
 }
 
 void SchaltwerkElement::setAnzahlEingangssignale(short anzahlE)

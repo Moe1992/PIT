@@ -29,12 +29,10 @@ GatterTyp* Bibliothek::getBibElement(string typ)
 	{
 		if(typ == bibElemente.at(i)->getName())
 		{
-			zeiger = bibElemente.at(i);
-			fund = 1;
-			i = bibElemente.size();
+			return bibElemente.at(i);
 		}
 	}
-	return zeiger; //Fund-abfrage einbauen?
+	return NULL;
 }
 
 void Bibliothek::dateiAusgabe()
