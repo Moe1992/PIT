@@ -23,17 +23,14 @@ string Bibliothek::getPfad()
 
 GatterTyp* Bibliothek::getBibElement(string typ)
 {
-	GatterTyp* zeiger;
-	bool fund;
 	for(int i = 0 ; i < bibElemente.size(); i++)
 	{
 		if(typ == bibElemente.at(i)->getName())
 		{
-			zeiger = bibElemente.at(i);
-			fund = 1;
+			return bibElemente.at(i);
 		}
 	}
-	return zeiger; //Fund-abfrage einbauen?
+	return NULL;
 }
 
 void Bibliothek::dateiAusgabe()
@@ -61,7 +58,6 @@ void Bibliothek::dateiAuswerten()
 		string zeile;
 		while(getline(bib,zeile))
 		{
-			int gatterNr = 0;
 			if((zeile != "[[Bausteine]]") && (zeile.find("[") == 0))
 			{
 				int posEnd = zeile.find("]");
@@ -73,41 +69,55 @@ void Bibliothek::dateiAuswerten()
 				{
 					bibElemente.push_back(new Flipflop);
 				}
-				bibElemente.at(gatterNr)->setName(temp);
+				bibElemente.back()->setName(temp);
 			} else if(zeile.find("ei:") == 0)
 			{
 				string temp = zeile.substr(3);
-				bibElemente.at(gatterNr)->setEingaenge(atof(temp.c_str()));
+				bibElemente.back()->setEingaenge(atof(temp.c_str()));
 			} else if(zeile.find("tpd0:") == 0)
 			{
 				string temp = zeile.substr(5);
-				bibElemente.at(gatterNr)->setGrundLaufzeit(atof(temp.c_str()));
+				bibElemente.back()->setGrundLaufzeit(atof(temp.c_str()));
 			} else if(zeile.find("kl:") == 0)
 			{
 				string temp = zeile.substr(3);
-				bibElemente.at(gatterNr)->setLastFaktor(atof(temp.c_str()));
+				bibElemente.back()->setLastFaktor(atof(temp.c_str()));
 			} else if(zeile.find("cl:") == 0)
 			{
 				string temp = zeile.substr(3);
-				bibElemente.at(gatterNr)->setLastKapazitaet(atof(temp.c_str()));
-				gatterNr++;
+				bibElemente.back()->setLastKapazitaet(atof(temp.c_str()));
 			} else if(zeile.find("tsetup:") == 0)
 			{
 				string temp = zeile.substr(7);
-				bibElemente.at(gatterNr)->setSetupTime(atof(temp.c_str()));
+				bibElemente.back()->setSetupTime(atof(temp.c_str()));
 			} else if(zeile.find("thold:") == 0)
 			{
 				string temp = zeile.substr(6);
-				bibElemente.at(gatterNr)->setHoldTime(atof(temp.c_str()));
+				bibElemente.back()->setHoldTime(atof(temp.c_str()));
 			} else if(zeile.find("ct:") == 0)
 			{
 				string temp = zeile.substr(3);
-				bibElemente.at(gatterNr)->setLastKapazitaetClock(atof(temp.c_str()));
-				gatterNr++;
+				bibElemente.back()->setLastKapazitaetClock(atof(temp.c_str()));
+			} else if(zeile.find("ed:") == 0)
+			{
+				string temp = zeile.substr(3);
+				bibElemente.back()->setEingaenge(atof(temp.c_str()));
+			} else if(zeile.find("cd:") == 0)
+			{
+				string temp = zeile.substr(3);
+				bibElemente.back()->setLastKapazitaet(atof(temp.c_str()));
+			} else if(zeile.find("tpdt:") == 0)
+			{
+				string temp = zeile.substr(5);
+				bibElemente.back()->setGrundLaufzeit(atof(temp.c_str()));
 			}
+			
 		}
 	}
-	
+	if(bibElemente.size() == 0)
+	{
+		readError();
+	}
 }
 
 bool Bibliothek::pfadEinlesen(string pfad)

@@ -29,7 +29,7 @@ private:
 	std::string name;
 	GatterTyp* typ;
 	double laufzeitEinzelgatter;
-	(SchaltwerkElement*)* nachfolgerElemente; //statisches Array verwenden? max 5 Ziele
+	SchaltwerkElement* nachfolgerElemente[5]; //statisches Array verwenden? max 5 Ziele
 	int anzahlNachfolger;
 	bool isEingangsElement;
 	bool isAusgangsElement;
