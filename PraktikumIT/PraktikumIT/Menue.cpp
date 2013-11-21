@@ -391,7 +391,7 @@ bool Menue::readValuesFromDevice()
 				cout << "Geraet misst gerade\n"; 
 			} 
 		} while (*((int*)(DevPtr->BaseAddress + STAT_REG)) == 0x00010001);
-		while (*((int*)(DevPtr->BaseAddress + STAT_REG)) != 0x00010000){}
+		while (*((int*)(DevPtr->BaseAddress + STAT_REG)) != 0x00010000){} //nötig, da sonst zu schnell der Wert ausgelesen wird
 		meineFaktoren.setSpannung( *((double*)(DevPtr->BaseAddress + DATA_REG)) );
 
 		//Temperatur messsen
@@ -424,7 +424,7 @@ bool Menue::readValuesFromDevice()
 			} 
 		} while (*((int*)(DevPtr->BaseAddress + STAT_REG)) == 0x00010001);
 		while (*((int*)(DevPtr->BaseAddress + STAT_REG)) != 0x00010000){}
-		meineFaktoren.setProzess( *((int*)(DevPtr->BaseAddress + DATA_REG)) ); 
+		meineFaktoren.setProzess( *((int*)(DevPtr->BaseAddress + DATA_REG)) + 1 ); 
 
 		return true;
 	}//Ende if-Geraet-angeschaltet
