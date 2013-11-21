@@ -15,10 +15,10 @@ public:
 	void erzeugeGraph();
 	ListenElement* getStartElement();
 	void ausgabeGraphstruktur();
+	void erzeugeEingangsGatterString();
 
 private:
 	void zaehleSignale();
-	void erzeugeEingangsGatterString();
 	SchaltwerkElement* getSchaltwerkElementByName(std::string quelle);
 
 	Bibliothek* bibliothek;

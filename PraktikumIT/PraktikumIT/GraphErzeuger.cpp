@@ -28,7 +28,7 @@ void GraphErzeuger::erzeugeVerketteteListe()
 {
 	if (signale != NULL)//Falls die Signalliste erzeugt wurde
 	{
-		zaehleSignale();
+		
 		for (int i = 0; i < anzahlSignale; i++) //Nach Durchlauf der Schleife ist die gesamte Liste erstellt. Es müssen aber nachträglich noch manche Attribute
 												//der SchaltwerkElemente gesetzt werden.
 		{
@@ -133,6 +133,7 @@ void GraphErzeuger::zaehleSignale()
 
 void GraphErzeuger::erzeugeEingangsGatterString()
 {
+	zaehleSignale();
 	eingangsElemente = "";
 	for (int i = 0; i < anzahlSignale; i++)
 	{

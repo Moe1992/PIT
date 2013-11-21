@@ -235,6 +235,7 @@ void Menue::schaltwerkMenue()
 			case '4':
 				meinGraphErzeuger.setSignalListe(meinSignalListeErzeuger.erzeugeListe());
 				meinGraphErzeuger.setBibliothek(&meineBibliothek);
+				meinGraphErzeuger.erzeugeEingangsGatterString();
 				meinGraphErzeuger.erzeugeVerketteteListe();
 				meinGraphErzeuger.erzeugeGraph();
 				meinGraphErzeuger.ausgabeGraphstruktur();
