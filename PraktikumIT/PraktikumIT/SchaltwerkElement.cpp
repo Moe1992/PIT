@@ -81,9 +81,9 @@ void SchaltwerkElement::setAnzahlNachfolger(int anzahlN)
 	//nachfolgerElemente = new SchaltwerkElement*[anzahlNachfolger]; //ueberfluessig falls statisches Array mit 5 Elementen
 }
 
-void SchaltwerkElement::setAnzahlEingangssignale(short anzahlE)
+void SchaltwerkElement::incAnzahlEingangssignale()
 {
-	anzahlEingangssignale = anzahlE;
+	anzahlEingangssignale++;
 }
 
 void SchaltwerkElement::setIsEingangsElement(bool isEingangsEl)

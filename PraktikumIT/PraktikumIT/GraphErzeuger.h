@@ -11,15 +11,16 @@ public:
 	~GraphErzeuger(void);
 	void setBibliothek(Bibliothek* bib);
 	void setSignalListe(Signal* signalList);
-	void erzeugeVerketteteListe();
-	void erzeugeGraph();
+	bool erzeugeGraph();
 	ListenElement* getStartElement();
 	void ausgabeGraphstruktur();
-	void erzeugeEingangsGatterString();
 
 private:
 	void zaehleSignale();
 	SchaltwerkElement* getSchaltwerkElementByName(std::string quelle);
+	void erzeugeEingangsGatterString();
+	void erzeugeVerketteteListe();
+	void loescheListe();
 
 	Bibliothek* bibliothek;
 	ListenElement* startElement;

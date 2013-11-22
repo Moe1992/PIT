@@ -54,6 +54,8 @@ void Bibliothek::dateiAusgabe()
 void Bibliothek::dateiAuswerten()
 {
 	ifstream bib(datei.c_str());
+	bibElemente.clear();
+
 	if(bib)
 	{
 		string zeile;
@@ -119,6 +121,7 @@ void Bibliothek::dateiAuswerten()
 	{
 		readError();
 	}
+	bib.close();
 }
 
 bool Bibliothek::pfadEinlesen(string pfad)

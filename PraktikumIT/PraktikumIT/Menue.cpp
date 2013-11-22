@@ -233,12 +233,15 @@ void Menue::schaltwerkMenue()
 				system("pause");
 				break;
 			case '4':
+				//Übergebe den Grapherzeuger die Signalliste und die Bibliothek
 				meinGraphErzeuger.setSignalListe(meinSignalListeErzeuger.erzeugeListe());
+				meineBibliothek.dateiAuswerten();
 				meinGraphErzeuger.setBibliothek(&meineBibliothek);
-				meinGraphErzeuger.erzeugeEingangsGatterString();
-				meinGraphErzeuger.erzeugeVerketteteListe();
-				meinGraphErzeuger.erzeugeGraph();
-				meinGraphErzeuger.ausgabeGraphstruktur();
+				//Nur wenn es ein gültiger Graph ist, wird er ausgegeben
+				if (meinGraphErzeuger.erzeugeGraph())
+				{
+					meinGraphErzeuger.ausgabeGraphstruktur();
+				}
 				break;
 			case '5':
 				goto ende;	//Kehrt zurueck zum Hauptmenue

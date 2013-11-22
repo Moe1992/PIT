@@ -26,6 +26,8 @@ void GraphErzeuger::setSignalListe(Signal* signalList)
 
 void GraphErzeuger::erzeugeVerketteteListe()
 {
+	loescheListe();
+	erzeugeEingangsGatterString();
 	if (signale != NULL)//Falls die Signalliste erzeugt wurde
 	{
 		
@@ -85,8 +87,19 @@ void GraphErzeuger::erzeugeVerketteteListe()
 	}
 }
 
-void GraphErzeuger::erzeugeGraph()
+void GraphErzeuger::loescheListe()
 {
+	if (startElement != NULL)
+	{
+		startElement = NULL;
+		anzahlElemente = 0;
+	}
+}
+
+bool GraphErzeuger::erzeugeGraph()
+{
+	erzeugeVerketteteListe();
+
 	for (int i = 0; i < anzahlSignale; i++) //alle Signale durchgehen
 	{
 		if (signale[i].getSignalTyp() != eingang) //handelt es sich nicht um ein Einganssignal, so gibt es ein Quellgatter
@@ -96,9 +109,35 @@ void GraphErzeuger::erzeugeGraph()
 			for (int ziel = 0; ziel < signale[i].getAnzahlZiele(); ziel++)
 			{
 				tempSWE->nachfolgerHinzufuegen(getSchaltwerkElementByName(signale[i].getZiel(ziel)), ziel);
+				tempSWE->getNachfolger(ziel)->incAnzahlEingangssignale();
+			}
+		}
+		else
+		{
+			for (int ziel = 0; ziel < signale[i].getAnzahlZiele(); ziel ++)
+			{
+				getSchaltwerkElementByName(signale[i].getZiel(ziel))->incAnzahlEingangssignale();
 			}
 		}
 	}
+	//Überprüfe ob AnzahlEingangssignale mit AnzahlEingänge übereinstimmt
+	ListenElement* tempLE = startElement;
+	short anzahlEingaenge, anzahlSignale;
+	while (tempLE != NULL)
+	{
+		anzahlEingaenge = tempLE->getSchaltwerkElement()->getTyp()->getEingaenge();
+		anzahlSignale = tempLE->getSchaltwerkElement()->getAnzahlEingangssignale();
+		if (anzahlEingaenge != anzahlSignale)
+		{
+			cout << "Fehler!\n";
+			cout << "Anzahl Eing\x84nge von " << tempLE->getSchaltwerkElement()->getName() << " laut Bibliothek: " << anzahlEingaenge << endl;
+			cout << "Anzahl Eing\x84nge von " << tempLE->getSchaltwerkElement()->getName() << " laut Schaltwerk: " << anzahlSignale << endl;
+			system("pause");
+			return false;
+		}
+		tempLE = tempLE->getNextElement();
+	}
+	return true;
 }
 
 SchaltwerkElement* GraphErzeuger::getSchaltwerkElementByName(std::string quelle)

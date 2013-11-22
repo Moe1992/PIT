@@ -20,7 +20,7 @@ public:
 	void setName(std::string n);
 	void nachfolgerHinzufuegen(SchaltwerkElement* schaltwerkElement, int pos);
 	void setAnzahlNachfolger(int anzahlN);
-	void setAnzahlEingangssignale(short anzahlE);
+	void incAnzahlEingangssignale();
 	void setIsEingangsElement(bool isEingangsEl);
 	void setIsAusgangsElement(bool isAusgangsEl);
 	void setLaufzeitEinzelgatter(double lfz);
