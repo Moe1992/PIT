@@ -11,6 +11,16 @@ LaufzeitAnalysator::~LaufzeitAnalysator(void)
 {
 }
 
+void LaufzeitAnalysator::setFaktoren(Faktoren* fakt)
+{
+	faktoren = fakt;
+}
+
+void LaufzeitAnalysator::setStartElement(ListenElement* start)
+{
+	startElement = start;
+}
+
 void LaufzeitAnalysator::EinzelLaufzeit()
 {
 	ListenElement* tempListenElement = startElement;

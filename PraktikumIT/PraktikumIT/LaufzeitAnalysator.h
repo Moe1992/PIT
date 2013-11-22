@@ -8,6 +8,8 @@ class LaufzeitAnalysator
 public:
 	LaufzeitAnalysator(void);
 	~LaufzeitAnalysator(void);
+	void setFaktoren(Faktoren* fakt);
+	void setStartElement(ListenElement* start);
 
 private:
 	Faktoren* faktoren;
