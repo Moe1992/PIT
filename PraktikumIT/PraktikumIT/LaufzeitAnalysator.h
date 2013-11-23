@@ -10,6 +10,7 @@ public:
 	~LaufzeitAnalysator(void);
 	void setFaktoren(Faktoren* fakt);
 	void setStartElement(ListenElement* start);
+	void starteAnalyse();
 
 private:
 	Faktoren* faktoren;
@@ -19,13 +20,17 @@ private:
 	std::string ausgangspfad;
 	double laufzeitUebergangspfad;
 	double laufzeitAusgangspfad;
+	double spannungFaktor;
+	double temperaturFaktor;
+	double prozessFaktor;
+
 	struct DFS_Daten
 	{
 		SchaltwerkElement* VaterElement;
 		double PfadLaufzeit;
 	};
 	std::map<SchaltwerkElement*, DFS_Daten> DFS_Zwischenspeicher;
-	void EinzelLaufzeit(); //Berechnung der Laufzeit der einzelnen Gatter
 
+	void EinzelLaufzeitenErmitteln(); //Berechnung der Laufzeit der einzelnen Gatter
 };
 

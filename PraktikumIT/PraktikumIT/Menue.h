@@ -7,6 +7,7 @@
 #include <string>
 #include <boost\lexical_cast.hpp>
 #include "GraphErzeuger.h"
+#include "LaufzeitAnalysator.h"
 
 class Menue
 {
@@ -20,6 +21,7 @@ private:
 	Bibliothek meineBibliothek;
 	SignalListeErzeuger meinSignalListeErzeuger;
 	GraphErzeuger meinGraphErzeuger;
+	LaufzeitAnalysator meinLaufzeitAnalysator;
 	bool debug;
 	ItivDev_Config* DevPtr;
 	Signal* mySignal;

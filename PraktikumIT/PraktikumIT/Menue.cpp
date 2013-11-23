@@ -9,6 +9,7 @@ Menue::Menue(void)
 	meineBibliothek = Bibliothek("bib.txt");
 	meinSignalListeErzeuger = SignalListeErzeuger();
 	meinGraphErzeuger = GraphErzeuger();
+	meinLaufzeitAnalysator = LaufzeitAnalysator();
 	DevPtr = ItivDev_GetConfigByName("Global\\ITIV_WindowsDevice");
 	debug = true;
 }
@@ -67,6 +68,7 @@ void Menue::start()
 				schaltwerkMenue();	//oeffnet das Menue zum Einstellen der Schaltwerksdatei
 				break;
 			case '4':
+				analyse();
 				break;
 			case '5':
 				goto ende;			//beendet das Programm
@@ -407,7 +409,49 @@ ende:;
 
 void Menue::analyse()
 {
+	string input;
+	while (true)
+	{
+		system("cls");
+		menueKopf();
+		cout << "Men\x81 Laufzeitanalyse" << endl;
+		cout << "(1) Laufzeitanalyse starten" << endl;
+		cout << "(2) Hauptmen\x81" << endl;
+		cout << "W\x84hle einen Men\x81punkt und best\x84tige mit Enter:\n";
 
+		getline(cin, input);
+		
+		if(input.length() != 1)
+		{
+			cout << "Bitte gib eine g\x81ltige Zahl ein!" << endl;
+			system("pause");
+		}
+		else
+		{
+			switch (input.at(0))
+			{
+			case '1':
+				meinGraphErzeuger.setSignalListe(meinSignalListeErzeuger.erzeugeListe());
+				meineBibliothek.dateiAuswerten();
+				meinGraphErzeuger.setBibliothek(&meineBibliothek);
+				//Nur wenn ein gültiger Graph erzeugt werden kann, soll die Analyse ausgeführt werden
+				if (meinGraphErzeuger.erzeugeGraph())
+				{
+					meinLaufzeitAnalysator.setFaktoren(&meineFaktoren);
+					meinLaufzeitAnalysator.setStartElement(meinGraphErzeuger.getStartElement());
+
+				}
+				break;
+			case '2':
+				goto ende;
+			default:
+				cout << "Bitte gib eine g\x81ltige Zahl ein" << endl;
+				system("pause");
+				break;
+			}
+		}
+	}
+ende:;
 }
 
 void Menue::menueKopf()
