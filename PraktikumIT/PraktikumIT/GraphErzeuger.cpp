@@ -24,7 +24,7 @@ void GraphErzeuger::setSignalListe(Signal* signalList)
 	signale = signalList;
 }
 
-void GraphErzeuger::erzeugeVerketteteListe()
+bool GraphErzeuger::erzeugeVerketteteListe()
 {
 	loescheListe();
 	erzeugeEingangsGatterString();
@@ -36,7 +36,7 @@ void GraphErzeuger::erzeugeVerketteteListe()
 		{
 			if (signale[i].getSignalTyp() != eingang) //Handelt es sich nicht um ein Einganssignal, so gibt es ein Quellgatter
 			{
-				if (signale[i].getQuellenTyp().c_str() != "")// unbenutzetes Signal ausschließen
+				if (signale[i].getQuellenTyp() != "")// unbenutzetes Signal ausschließen
 				{
 					if (startElement == NULL)//Sind noch keine Elemente in der Liste enthalten, erstelle eine Liste
 					{
@@ -77,14 +77,18 @@ void GraphErzeuger::erzeugeVerketteteListe()
 					{
 						endElement->getSchaltwerkElement()->setIsEingangsElement(false);
 					}
-					//LaufzeitEinzelgatter einstellen
-					endElement->getSchaltwerkElement()->setLaufzeitEinzelgatter(bibliothek->getBibElement(signale[i].getQuellenTyp())->getGrundLaufzeit());
-					// 
+				}
+				else
+				{
+					cout << "Fehler! Ein unbenutztes Signal wurde gefunden\n";
+					system("pause");
+					return false;
 				}
 			}
 		}//ende for-Schleife
-
+		return true;
 	}
+	return false;
 }
 
 void GraphErzeuger::loescheListe()
@@ -98,46 +102,47 @@ void GraphErzeuger::loescheListe()
 
 bool GraphErzeuger::erzeugeGraph()
 {
-	erzeugeVerketteteListe();
-
-	for (int i = 0; i < anzahlSignale; i++) //alle Signale durchgehen
+	if (erzeugeVerketteteListe())
 	{
-		if (signale[i].getSignalTyp() != eingang) //handelt es sich nicht um ein Einganssignal, so gibt es ein Quellgatter
+		for (int i = 0; i < anzahlSignale; i++) //alle Signale durchgehen
 		{
-			SchaltwerkElement* tempSWE = getSchaltwerkElementByName(signale[i].getQuelle());
-			tempSWE->setAnzahlNachfolger(signale[i].getAnzahlZiele());
-			for (int ziel = 0; ziel < signale[i].getAnzahlZiele(); ziel++)
+			if (signale[i].getSignalTyp() != eingang) //handelt es sich nicht um ein Einganssignal, so gibt es ein Quellgatter
 			{
-				tempSWE->nachfolgerHinzufuegen(getSchaltwerkElementByName(signale[i].getZiel(ziel)), ziel);
-				tempSWE->getNachfolger(ziel)->incAnzahlEingangssignale();
+				SchaltwerkElement* tempSWE = getSchaltwerkElementByName(signale[i].getQuelle());
+				tempSWE->setAnzahlNachfolger(signale[i].getAnzahlZiele());
+				for (int ziel = 0; ziel < signale[i].getAnzahlZiele(); ziel++)
+				{
+					tempSWE->nachfolgerHinzufuegen(getSchaltwerkElementByName(signale[i].getZiel(ziel)), ziel);
+					tempSWE->getNachfolger(ziel)->incAnzahlEingangssignale();
+				}
+			}
+			else
+			{
+				for (int ziel = 0; ziel < signale[i].getAnzahlZiele(); ziel ++)
+				{
+					getSchaltwerkElementByName(signale[i].getZiel(ziel))->incAnzahlEingangssignale();
+				}
 			}
 		}
-		else
+		//Überprüfe ob AnzahlEingangssignale mit AnzahlEingänge übereinstimmt
+		ListenElement* tempLE = startElement;
+		short anzahlEingaenge, anzahlSignale;
+		while (tempLE != NULL)
 		{
-			for (int ziel = 0; ziel < signale[i].getAnzahlZiele(); ziel ++)
+			anzahlEingaenge = tempLE->getSchaltwerkElement()->getTyp()->getEingaenge();
+			anzahlSignale = tempLE->getSchaltwerkElement()->getAnzahlEingangssignale();
+			if (anzahlEingaenge != anzahlSignale)
 			{
-				getSchaltwerkElementByName(signale[i].getZiel(ziel))->incAnzahlEingangssignale();
+				cout << "Fehler!\n";
+				cout << "Anzahl Eing\x84nge von " << tempLE->getSchaltwerkElement()->getName() << " laut Bibliothek: " << anzahlEingaenge << endl;
+				cout << "Anzahl Eing\x84nge von " << tempLE->getSchaltwerkElement()->getName() << " laut Schaltwerk: " << anzahlSignale << endl;
+				system("pause");
+				return false;
 			}
+			tempLE = tempLE->getNextElement();
 		}
+		return true; 
 	}
-	//Überprüfe ob AnzahlEingangssignale mit AnzahlEingänge übereinstimmt
-	ListenElement* tempLE = startElement;
-	short anzahlEingaenge, anzahlSignale;
-	while (tempLE != NULL)
-	{
-		anzahlEingaenge = tempLE->getSchaltwerkElement()->getTyp()->getEingaenge();
-		anzahlSignale = tempLE->getSchaltwerkElement()->getAnzahlEingangssignale();
-		if (anzahlEingaenge != anzahlSignale)
-		{
-			cout << "Fehler!\n";
-			cout << "Anzahl Eing\x84nge von " << tempLE->getSchaltwerkElement()->getName() << " laut Bibliothek: " << anzahlEingaenge << endl;
-			cout << "Anzahl Eing\x84nge von " << tempLE->getSchaltwerkElement()->getName() << " laut Schaltwerk: " << anzahlSignale << endl;
-			system("pause");
-			return false;
-		}
-		tempLE = tempLE->getNextElement();
-	}
-	return true;
 }
 
 SchaltwerkElement* GraphErzeuger::getSchaltwerkElementByName(std::string quelle)

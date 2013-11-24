@@ -21,6 +21,10 @@ Menue::~Menue(void){}
 void Menue::start()
 {
 	string input;
+	if (DevPtr != 0) //Falls die Gerätesimulation gestartet ist, sollen die Werte gemessen werden
+	{
+		debug = false;
+	}
 	if(!debug) //Je nach dem ob debug aktiviert ist, werden nun die 3 Groessen gemessen
 	{
 		readValuesFromDevice();
@@ -42,7 +46,7 @@ void Menue::start()
 		cout << "(3) Schaltwerk" << endl;	//oeffnet das Menue zum Einstellen der Schaltwerksdatei
 		cout << "    Pfad zur Schaltwerksdatei: " << meinSignalListeErzeuger.getPfad() << endl << endl;
 
-		cout << "(4) Analyse starten" << endl << endl;	//startet die Analyse
+		cout << "(4) Analyse" << endl << endl;	//startet die Analyse
 
 		cout << "(5) Programm beenden" << endl << endl << endl;
 
@@ -439,7 +443,7 @@ void Menue::analyse()
 				{
 					meinLaufzeitAnalysator.setFaktoren(&meineFaktoren);
 					meinLaufzeitAnalysator.setStartElement(meinGraphErzeuger.getStartElement());
-
+					meinLaufzeitAnalysator.starteAnalyse();
 				}
 				break;
 			case '2':

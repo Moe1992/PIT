@@ -19,7 +19,7 @@ private:
 	void zaehleSignale();
 	SchaltwerkElement* getSchaltwerkElementByName(std::string quelle);
 	void erzeugeEingangsGatterString();
-	void erzeugeVerketteteListe();
+	bool erzeugeVerketteteListe();
 	void loescheListe();
 
 	Bibliothek* bibliothek;
