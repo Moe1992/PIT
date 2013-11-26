@@ -19,6 +19,9 @@ public:
 	void ausgabeDatei();
 	Signal* erzeugeListe();					//liefert Zeiger auf Liste falls Datei gueltig, ansonsten NULL
 	void ausgabeSignalListe();
+	long getFrequenz(){
+		return frequenz;
+	}
 
 
 private:

@@ -12,7 +12,7 @@ public:
 	short getLastFaktor();
 	short getLastKapazitaet();
 	short getEingaenge();
-	bool getIsFlipflop();
+	virtual bool getIsFlipflop();
 	void setName(std::string n);
 	void setGrundLaufzeit(double gl);
 	void setLastFaktor(short lf);

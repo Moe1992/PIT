@@ -443,7 +443,9 @@ void Menue::analyse()
 				{
 					meinLaufzeitAnalysator.setFaktoren(&meineFaktoren);
 					meinLaufzeitAnalysator.setStartElement(meinGraphErzeuger.getStartElement());
+					meinLaufzeitAnalysator.setFrequenz(meinSignalListeErzeuger.getFrequenz());
 					meinLaufzeitAnalysator.starteAnalyse();
+					system("pause");
 				}
 				break;
 			case '2':

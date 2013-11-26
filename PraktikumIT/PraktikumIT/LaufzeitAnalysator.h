@@ -11,6 +11,7 @@ public:
 	void setFaktoren(Faktoren* fakt);
 	void setStartElement(ListenElement* start);
 	void starteAnalyse();
+	void setFrequenz(long _frequenz);
 
 private:
 	Faktoren* faktoren;
@@ -32,5 +33,10 @@ private:
 	std::map<SchaltwerkElement*, DFS_Daten> DFS_Zwischenspeicher;
 
 	void EinzelLaufzeitenErmitteln(); //Berechnung der Laufzeit der einzelnen Gatter
+	void dfs(ListenElement* startknoten);
+	void dfs_visit(SchaltwerkElement* k, SchaltwerkElement* s);
+	bool zyklensuche(SchaltwerkElement* sw);
+	std::string pfad_erstellen(SchaltwerkElement* s, SchaltwerkElement* k, SchaltwerkElement* v);
+	
 };
 
