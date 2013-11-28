@@ -81,3 +81,8 @@ void GatterTyp::setLastKapazitaetClock(short lkc)
 {
 	
 }
+
+short GatterTyp::getSetupTime()
+{
+	return 0;
+}

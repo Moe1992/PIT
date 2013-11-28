@@ -247,6 +247,9 @@ void Menue::schaltwerkMenue()
 				if (meinGraphErzeuger.erzeugeGraph())
 				{
 					meinGraphErzeuger.ausgabeGraphstruktur();
+				}else
+				{
+					
 				}
 				break;
 			case '5':
@@ -445,7 +448,6 @@ void Menue::analyse()
 					meinLaufzeitAnalysator.setStartElement(meinGraphErzeuger.getStartElement());
 					meinLaufzeitAnalysator.setFrequenz(meinSignalListeErzeuger.getFrequenz());
 					meinLaufzeitAnalysator.starteAnalyse();
-					system("pause");
 				}
 				break;
 			case '2':

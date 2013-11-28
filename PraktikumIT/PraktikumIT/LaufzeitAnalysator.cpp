@@ -27,6 +27,9 @@ void LaufzeitAnalysator::setStartElement(ListenElement* start)
 void LaufzeitAnalysator::starteAnalyse()
 {
 	EinzelLaufzeitenErmitteln();
+	laufzeitUebergangspfad = 0;
+	uebergangspfad = "";
+	zyklus = false;
 	ListenElement* tempLE = startElement;
 	//alle Eingangsgatter und FFs werden einmal als Startknoten betrachtet
 	do{			//
@@ -36,24 +39,51 @@ void LaufzeitAnalysator::starteAnalyse()
 		tempLE = tempLE->getNextElement();
 	} while (tempLE != NULL);
 
+	if(zyklus)
+	{
+		system("pause");
+		return;
+	}
+	
+	double setuptime = 0;
+
+	if (uebergangspfad != "")
+	{
+		string name = uebergangspfad.substr(uebergangspfad.rfind("g"),4);
+		double setuptime = (double) getSchaltwerkElementByName(name)->getTyp()->getSetupTime(); 
+	}
+
+	double maxFreq = ((laufzeitUebergangspfad != 0) ? (1 / (laufzeitUebergangspfad + setuptime)) : -1); //[f]=[1/ps]
+
 	//Ausgabe
-	cout << "L\x84ngster Pfad im \x9A" << "berf\x81hrungsschaltnetz: " << endl;
-	cout << uebergangspfad; 
-	cout << endl << "Maximale Laufzeit der Pfade im \x9A" << "berf\x81hrungsschaltnetz: " << laufzeitUebergangspfad << " ps" << endl << endl;
+	system("cls");
+	
+	if (maxFreq != -1)
+	{
+		cout << "L\x84ngster Pfad im \x9A" << "berf\x81hrungsschaltnetz: " << endl;
+		cout << uebergangspfad; 
+		cout << endl << "Maximale Laufzeit der Pfade im \x9A" << "berf\x81hrungsschaltnetz: " << laufzeitUebergangspfad << " ps" << endl << endl; 
+	}
 
 	cout << "L\x84ngster Pfad im Ausgangsschaltnetz: " << endl;
 	cout << ausgangspfad; 
 	cout << endl << "Maximale Laufzeit der Pfade im Ausgangsschaltnetz: " << laufzeitAusgangspfad << " ps" << endl << endl;
 
 	cout << "------------------------------------" << endl << endl;
-	double maxFreq = ((laufzeitUebergangspfad > laufzeitAusgangspfad) ? (1 / laufzeitUebergangspfad) : (1 / laufzeitAusgangspfad)); //[f]=[1/ps]
-	cout << "Die maximal zul\x84ssige Frequenz f\x81r das Schaltnetz / -werk betr\x84gt: " << maxFreq*1000000 << " MHz" << endl << endl;
-	cout << "Bedingung f\x81r die Taktfrequenz vom Schaltnetz / -werk ist" << ((frequenz/1000000000000 < maxFreq) ? "" : " nicht") << " erf\x81llt!" << endl;
+	
+	
+	if (maxFreq != -1)
+	{
+		cout << "Die maximal zul\x84ssige Frequenz f\x81r das Schaltnetz / -werk betr\x84gt: " << maxFreq*1000000 << " MHz" << endl << endl;
+	}
+	
+	cout << "Bedingung f\x81r die Taktfrequenz vom Schaltnetz / -werk ist" << ((frequenz/1000000000000 < maxFreq || maxFreq == -1) ? "" : " nicht") << " erf\x81llt!" << endl;
 	cout << "Die Taktfrequenz " << frequenz / 1000000 << " MHz ist ";
-	if (frequenz / 1000000000000 < maxFreq) cout << "kleiner";
+	if (frequenz / 1000000000000 < maxFreq || maxFreq == -1) cout << "kleiner";
 	else cout << "gr\x94\xE1" << "er";
 	cout << " als die maximale Frequenz!" << endl;
 	cout << endl << "------------------------------------" << endl;
+	system("pause");
 }
 
 void LaufzeitAnalysator::EinzelLaufzeitenErmitteln()
@@ -81,13 +111,8 @@ void LaufzeitAnalysator::EinzelLaufzeitenErmitteln()
 		//Jetzt wird die gesamte Gatterlaufzeit anhand der Formel berechnet: tpd,actual = (tpd0 + tlast) * KT * KV * KP
 		tpdactual = (tpd0 + tlast) * spannungFaktor * temperaturFaktor * prozessFaktor;
 		tempSchaltwerkElement->setLaufzeitEinzelgatter(tpdactual);
-		//test
-		cout << tempListenElement->getSchaltwerkElement()->getName() << ": " << tpdactual << endl;
-
 
 		tempListenElement = tempListenElement->getNextElement();
-		
-
 	} while (tempListenElement != NULL);
 }
 
@@ -106,6 +131,7 @@ void LaufzeitAnalysator::dfs(ListenElement* startknoten){
 
 void LaufzeitAnalysator::dfs_visit(SchaltwerkElement* k, SchaltwerkElement* s){
 	SchaltwerkElement* v = NULL;
+	if(zyklus) return;
 
 	for (int i = 0; i < k->getAnzahlNachfolger(); i++){
 		v = k->getNachfolger(i);
@@ -122,8 +148,9 @@ void LaufzeitAnalysator::dfs_visit(SchaltwerkElement* k, SchaltwerkElement* s){
 
 				if (zyklensuche(v)){		//zyklensuche
 					//fehler_wegen_zyklus();
+					cout << "Zyklus gefunden" << endl;
+					zyklus = true;
 					if (temp != NULL){
-						cout << "Zyklus gefunden" << temp->getName() << endl;
 						DFS_Zwischenspeicher[v].VaterElement = temp;	//?
 					}
 					break;
@@ -172,3 +199,15 @@ string LaufzeitAnalysator::pfad_erstellen(SchaltwerkElement* s, SchaltwerkElemen
 	return pfad;
 }
 
+SchaltwerkElement* LaufzeitAnalysator::getSchaltwerkElementByName(std::string quelle)
+{
+	ListenElement* tempLE = startElement;
+	while (true)
+	{
+		if (quelle == tempLE->getSchaltwerkElement()->getName())
+		{
+			return tempLE->getSchaltwerkElement();
+		}
+		tempLE = tempLE->getNextElement();
+	}
+}

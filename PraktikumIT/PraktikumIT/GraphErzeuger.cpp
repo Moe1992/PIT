@@ -26,11 +26,10 @@ void GraphErzeuger::setSignalListe(Signal* signalList)
 
 bool GraphErzeuger::erzeugeVerketteteListe()
 {
-	loescheListe();
-	erzeugeEingangsGatterString();
 	if (signale != NULL)//Falls die Signalliste erzeugt wurde
 	{
-		
+		loescheListe();
+		erzeugeEingangsGatterString();
 		for (int i = 0; i < anzahlSignale; i++) //Nach Durchlauf der Schleife ist die gesamte Liste erstellt. Es müssen aber nachträglich noch manche Attribute
 												//der SchaltwerkElemente gesetzt werden.
 		{
@@ -143,6 +142,9 @@ bool GraphErzeuger::erzeugeGraph()
 		}
 		return true; 
 	}
+	cout << "Fehler beim Erzeugen des Graphen" << endl;
+	system("pause");
+	return false;
 }
 
 SchaltwerkElement* GraphErzeuger::getSchaltwerkElementByName(std::string quelle)

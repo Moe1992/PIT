@@ -101,6 +101,7 @@ Signal* SignalListeErzeuger::erzeugeListe(){					//liefert Zeiger auf Liste fall
 						cout << endl << "Kurzschluss bei Signal s";
 						printf("%03d", a1);
 						cout << endl;
+						return NULL;
 					}
 					signale[a1 - 1].setQuelle(gatterName);
 					signale[a1 - 1].setQuellenTyp(gatterTyp);
@@ -124,6 +125,7 @@ Signal* SignalListeErzeuger::erzeugeListe(){					//liefert Zeiger auf Liste fall
 						cout << endl << "Kurzschluss bei Signal s";
 							printf("%03d", a1); 
 						cout << endl;
+						return NULL;
 					}
 					signale[a1 - 1].setQuelle(gatterName);
 					signale[a1 - 1].setQuellenTyp(gatterTyp);
@@ -139,35 +141,35 @@ Signal* SignalListeErzeuger::erzeugeListe(){					//liefert Zeiger auf Liste fall
 
 	datei.close();
 
-	cout << "Testausgabe AnzahlSignale: " << anzahlSignale << " Frequenz: " << frequenz << endl;			//zu entfernen
-
 	return signale;
 }
 
 void SignalListeErzeuger::ausgabeSignalListe(){
-	erzeugeListe();
-	cout << "--------------------" << endl;
-	cout << "Signale:" << endl;
-	for (int i = 0; i < anzahlSignale; i++){
-		cout << "-----" << endl;
-		cout << "Signalname: s";
-		printf("%03d", i + 1);		//setprecision fuer fuehrende Nullen erforderlich
-		cout << endl << "Signaltyp: ";
-		switch (signale[i].getSignalTyp()){
-		case 0: cout << "Eingangssignal"; break;
-		case 1: cout << "internes Signal"; break;
-		case 2: cout << "Ausgangssignal"; break;
-		case 3: cout << "unbekanntes Signal"; break;
-		}
+	if (erzeugeListe() != NULL)
+	{
+		cout << "--------------------" << endl;
+		cout << "Signale:" << endl;
+		for (int i = 0; i < anzahlSignale; i++){
+			cout << "-----" << endl;
+			cout << "Signalname: s";
+			printf("%03d", i + 1);		//setprecision fuer fuehrende Nullen erforderlich
+			cout << endl << "Signaltyp: ";
+			switch (signale[i].getSignalTyp()){
+			case 0: cout << "Eingangssignal"; break;
+			case 1: cout << "internes Signal"; break;
+			case 2: cout << "Ausgangssignal"; break;
+			case 3: cout << "unbekanntes Signal"; break;
+			}
 
-		cout << endl << "Signalquelle: " << signale[i].getQuelle() << endl;
-		cout << "Quellentyp: " << signale[i].getQuellenTyp() << endl;
-		cout << "-->Das Signal hat " << signale[i].getAnzahlZiele() << (signale[i].getAnzahlZiele() == 1 ? " Ziel" : " Ziele") << endl;
-		cout << "Ziel-Gatter : ";
-		for (int j = 0; j < 5; j++){
-			cout << signale[i].getZiel(j) << " ";
-		}
-		cout << endl;
+			cout << endl << "Signalquelle: " << signale[i].getQuelle() << endl;
+			cout << "Quellentyp: " << signale[i].getQuellenTyp() << endl;
+			cout << "-->Das Signal hat " << signale[i].getAnzahlZiele() << (signale[i].getAnzahlZiele() == 1 ? " Ziel" : " Ziele") << endl;
+			cout << "Ziel-Gatter : ";
+			for (int j = 0; j < 5; j++){
+				cout << signale[i].getZiel(j) << " ";
+			}
+			cout << endl;
+		} 
 	}
 
 }

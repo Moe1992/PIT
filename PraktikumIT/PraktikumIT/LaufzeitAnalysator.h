@@ -24,6 +24,7 @@ private:
 	double spannungFaktor;
 	double temperaturFaktor;
 	double prozessFaktor;
+	bool zyklus;
 
 	struct DFS_Daten
 	{
@@ -31,6 +32,8 @@ private:
 		double PfadLaufzeit;
 	};
 	std::map<SchaltwerkElement*, DFS_Daten> DFS_Zwischenspeicher;
+
+	SchaltwerkElement* getSchaltwerkElementByName(std::string quelle);
 
 	void EinzelLaufzeitenErmitteln(); //Berechnung der Laufzeit der einzelnen Gatter
 	void dfs(ListenElement* startknoten);
