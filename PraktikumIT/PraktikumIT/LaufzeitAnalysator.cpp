@@ -53,7 +53,7 @@ void LaufzeitAnalysator::starteAnalyse()
 		setuptime = (double) getSchaltwerkElementByName(name)->getTyp()->getSetupTime(); 
 	}
 
-	double maxFreq = ((laufzeitUebergangspfad != 0) ? (1 / (laufzeitUebergangspfad + setuptime)) : -1); //[f]=[1/ps]
+	double maxFreq = ((laufzeitUebergangspfad != 0) ? (1 / (laufzeitUebergangspfad + setuptime)) : -1); //[f]=[1/ps]=[THz]
 
 	//Ausgabe
 	system("cls");
@@ -77,9 +77,9 @@ void LaufzeitAnalysator::starteAnalyse()
 		cout << "Die maximal zul\x84ssige Frequenz f\x81r das Schaltnetz / -werk betr\x84gt: " << maxFreq*1000000 << " MHz" << endl << endl;
 	}
 	
-	cout << "Bedingung f\x81r die Taktfrequenz vom Schaltnetz / -werk ist" << ((frequenz/1000000000000 < maxFreq || maxFreq == -1) ? "" : " nicht") << " erf\x81llt!" << endl;
+	cout << "Bedingung f\x81r die Taktfrequenz vom Schaltnetz / -werk ist" << ((frequenz < maxFreq*1000000000000 || maxFreq == -1) ? "" : " nicht") << " erf\x81llt!" << endl;
 	cout << "Die Taktfrequenz " << frequenz / 1000000 << " MHz ist ";
-	if (frequenz / 1000000000000 < maxFreq || maxFreq == -1) cout << "kleiner";
+	if (frequenz < maxFreq*1000000000000 || maxFreq == -1) cout << "kleiner";
 	else cout << "gr\x94\xE1" << "er";
 	cout << " als die maximale Frequenz!" << endl;
 	cout << endl << "------------------------------------" << endl;
