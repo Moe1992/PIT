@@ -1,6 +1,6 @@
 #include "SchaltwerkElement.h"
 
-
+//Konstruktoren mit Festlegung der Standardwerte
 SchaltwerkElement::SchaltwerkElement(void)
 {
 	name = "";
@@ -10,6 +10,7 @@ SchaltwerkElement::SchaltwerkElement(void)
 	isAusgangsElement = NULL;
 	anzahlEingangssignale = 0;
 }
+
 SchaltwerkElement::SchaltwerkElement(GatterTyp* gTyp){
 	typ = gTyp;
 	name = "";
@@ -78,7 +79,6 @@ void SchaltwerkElement::nachfolgerHinzufuegen(SchaltwerkElement* schaltwerkEleme
 void SchaltwerkElement::setAnzahlNachfolger(int anzahlN)
 {
 	anzahlNachfolger = anzahlN;
-	//nachfolgerElemente = new SchaltwerkElement*[anzahlNachfolger]; //ueberfluessig falls statisches Array mit 5 Elementen
 }
 
 void SchaltwerkElement::incAnzahlEingangssignale()

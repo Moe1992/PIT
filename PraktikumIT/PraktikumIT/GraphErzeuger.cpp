@@ -51,11 +51,10 @@ bool GraphErzeuger::erzeugeVerketteteListe()
 					}
 
 					anzahlElemente++;
+					//Dem neu erzeugten ListenElement wird ein SchaltwerkElement zugewiesen, welches direkt hier erzeugt wird
+					endElement->setSchaltwerkElement(new SchaltwerkElement(bibliothek->getBibElement(signale[i].getQuellenTyp())));
 
-					//GatterTyp* temp = bibliothek->getBibElement(signale[i].getQuellenTyp()); //der Gattertyp
-					endElement->setSchaltwerkElement(new SchaltwerkElement(bibliothek->getBibElement(signale[i].getQuellenTyp())));	//wird direkt an den Konstruktor übergeben
-
-					//setzen der Attribute von SchaltwerkElement
+					//Setzen der Attribute von SchaltwerkElement
 					//Gattername wird gesetzt
 					endElement->getSchaltwerkElement()->setName(signale[i].getQuelle());
 
@@ -68,6 +67,7 @@ bool GraphErzeuger::erzeugeVerketteteListe()
 					{
 						endElement->getSchaltwerkElement()->setIsAusgangsElement(false);
 					}
+					//Durchsuche den String aller Eingangsgatter nach dem Gatternamen des Schaltwerkselementes
 					if (eingangsElemente.find(endElement->getSchaltwerkElement()->getName()) != std::string::npos)
 					{
 						endElement->getSchaltwerkElement()->setIsEingangsElement(true);
@@ -101,32 +101,33 @@ void GraphErzeuger::loescheListe()
 
 bool GraphErzeuger::erzeugeGraph()
 {
-	if (erzeugeVerketteteListe())
+	if (erzeugeVerketteteListe())//Kann eine Liste ohne Fehler erzeugt werden?
 	{
 		for (int i = 0; i < anzahlSignale; i++) //alle Signale durchgehen
 		{
-			if (signale[i].getSignalTyp() != eingang) //handelt es sich nicht um ein Einganssignal, so gibt es ein Quellgatter
+			if (signale[i].getSignalTyp() != eingang) //handelt es sich NICHT um ein Einganssignal, so gibt es ein Quellgatter
 			{
 				SchaltwerkElement* tempSWE = getSchaltwerkElementByName(signale[i].getQuelle());
-				tempSWE->setAnzahlNachfolger(signale[i].getAnzahlZiele());
+				tempSWE->setAnzahlNachfolger(signale[i].getAnzahlZiele());	//Anzahl der Nachfolger entspricht der Anzahl der Ziele des erzeugten Signals
 				for (int ziel = 0; ziel < signale[i].getAnzahlZiele(); ziel++)
 				{
 					tempSWE->nachfolgerHinzufuegen(getSchaltwerkElementByName(signale[i].getZiel(ziel)), ziel);
-					tempSWE->getNachfolger(ziel)->incAnzahlEingangssignale();
+					tempSWE->getNachfolger(ziel)->incAnzahlEingangssignale();	//erhöhe die Anzahl der benutzten Eingänge
 				}
 			}
-			else
+			else //Es handelt sich um ein Eingangssignal
 			{
+				//Es müssen also nur die Anzahl der benutzten Eingänge angepasst werden
 				for (int ziel = 0; ziel < signale[i].getAnzahlZiele(); ziel ++)
 				{
 					getSchaltwerkElementByName(signale[i].getZiel(ziel))->incAnzahlEingangssignale();
 				}
 			}
 		}
-		//Überprüfe ob AnzahlEingangssignale mit AnzahlEingänge übereinstimmt
+		//Überprüfe ob die Anzahl der benutzten Eingänge mit der Anzahl der vorhandenen Eingänge übereinstimmt
 		ListenElement* tempLE = startElement;
 		short anzahlEingaenge, anzahlSignale;
-		while (tempLE != NULL)
+		while (tempLE != NULL) //gehe alle ListenElemente durch
 		{
 			anzahlEingaenge = tempLE->getSchaltwerkElement()->getTyp()->getEingaenge();
 			anzahlSignale = tempLE->getSchaltwerkElement()->getAnzahlEingangssignale();
@@ -147,6 +148,7 @@ bool GraphErzeuger::erzeugeGraph()
 	return false;
 }
 
+//Gibt den Zeiger auf ein SchaltwerkElement anhand dessen Namen zurück
 SchaltwerkElement* GraphErzeuger::getSchaltwerkElementByName(std::string quelle)
 {
 	ListenElement* tempLE = startElement;
@@ -165,6 +167,7 @@ void GraphErzeuger::zaehleSignale()
 	int i = 0;
 	while (true)
 	{
+		//true, falls man am Ende des Arrays angekommen ist
 		if (signale[i].getSignalTyp() != eingang && signale[i].getSignalTyp() != intern && signale[i].getSignalTyp() != ausgang && signale[i].getSignalTyp() != unbekannt)
 		{
 			break;
@@ -177,6 +180,7 @@ void GraphErzeuger::zaehleSignale()
 	anzahlSignale = i;
 }
 
+//Schreibt alle Eingangsgatter in einen String
 void GraphErzeuger::erzeugeEingangsGatterString()
 {
 	zaehleSignale();
@@ -192,6 +196,7 @@ void GraphErzeuger::erzeugeEingangsGatterString()
 		}
 	}
 }
+
 void GraphErzeuger::ausgabeGraphstruktur()
 {
 	ListenElement* tempLE = startElement;

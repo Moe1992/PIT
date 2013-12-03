@@ -172,24 +172,24 @@ bool Faktoren::berechneProzessFaktor(short prz)	//Weist den Prozesswerten 1, 2 u
 
 double Faktoren::berechneFaktor(double wert, double arr[][2], int laenge)
 {
-	for (int i = 0; i < laenge; i++)	//Pfrueft zuerst, ob sich der Wert schon in der Liste befindet. Falls ja, gib den passenden Faktor zurueck
+	for (int i = 0; i < laenge; i++)	//Prueft zuerst, ob sich der Wert schon in der Liste befindet. Falls ja, gib den passenden Faktor zurueck
 	{
 		if (wert == arr[i][0])
 		{
 			return arr[i][1];
 		}
 	}
-	//Der Wert wurde nicht in der Liste gefunden, daher muss der Faktor per Interpolation ermittelt werden. Ermittle daher im naechsten Schritt die nacheliegendsten Werte
+	//Der Wert wurde nicht in der Liste gefunden, daher muss der Faktor per Interpolation ermittelt werden. Ermittle daher im naechsten Schritt die naheliegendsten Werte
 	double x1, x2, y1, y2;
 
-	for (int i = 0; i < laenge; i++)
+	for (int i = 0; i < laenge; i++)//Funktioniert nach dem Prinzip des "Einquetschens", die Laufvariable i fängt am Anfang an
 	{
-		if (arr[i][0] < wert)
+		if (arr[i][0] < wert)//Geht am Anfang los: Ist der Wert in der Liste kleiner als -wert- werden x1 und y1 damit gespeichert. Wird immer wieder aufgerufen, bis der richtige Wert gefunden wurde
 		{
 			x1 = arr[i][0];
 			y1 = arr[i][1];
 		}
-		if (arr[laenge-i-1][0] > wert)
+		if (arr[laenge-i-1][0] > wert)//Läuft in umgekehrter Richtung und schaut ob der Wert an der Stelle in der Tabelle noch größer ist als -wert-
 		{
 			x2 = arr[laenge-i-1][0];
 			y2 = arr[laenge-i-1][1];
@@ -201,7 +201,7 @@ double Faktoren::berechneFaktor(double wert, double arr[][2], int laenge)
 
 double Faktoren::interpolation(double wert, double x1, double y1, double x2, double y2)
 {
-	if (x1!=x2)
+	if (x1!=x2)//Darf nicht gleich sein, da sonst durch 0 geteilt wird
 	{
 		double erg=y1+((y2-y1)/(x2-x1))*(wert-x1);	//Y(X0) = Y1 + Steigung mal (Entfernung von X0 zu x1)
 		return erg;

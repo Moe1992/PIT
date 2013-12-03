@@ -32,6 +32,7 @@ void Menue::start()
 
 	while (true)
 	{
+		//Ausgabe des Hauptmenüs
 		system("cls");
 		menueKopf();
 
@@ -46,7 +47,7 @@ void Menue::start()
 		cout << "(3) Schaltwerk" << endl;	//oeffnet das Menue zum Einstellen der Schaltwerksdatei
 		cout << "    Pfad zur Schaltwerksdatei: " << meinSignalListeErzeuger.getPfad() << endl << endl;
 
-		cout << "(4) Analyse" << endl << endl;	//startet die Analyse
+		cout << "(4) Starte Analyse" << endl << endl;	//startet die Analyse
 
 		cout << "(5) Programm beenden" << endl << endl << endl;
 
@@ -249,7 +250,7 @@ void Menue::schaltwerkMenue()
 					meinGraphErzeuger.ausgabeGraphstruktur();
 				}else
 				{
-					
+
 				}
 				break;
 			case '5':
@@ -416,50 +417,17 @@ ende:;
 
 void Menue::analyse()
 {
-	string input;
-	while (true)
+	meinGraphErzeuger.setSignalListe(meinSignalListeErzeuger.erzeugeListe());
+	meineBibliothek.dateiAuswerten();
+	meinGraphErzeuger.setBibliothek(&meineBibliothek);
+	//Nur wenn ein gültiger Graph erzeugt werden kann, soll die Analyse ausgeführt werden
+	if (meinGraphErzeuger.erzeugeGraph())
 	{
-		system("cls");
-		menueKopf();
-		cout << "Men\x81 Laufzeitanalyse" << endl;
-		cout << "(1) Laufzeitanalyse starten" << endl;
-		cout << "(2) Hauptmen\x81" << endl;
-		cout << "W\x84hle einen Men\x81punkt und best\x84tige mit Enter:\n";
-
-		getline(cin, input);
-		
-		if(input.length() != 1)
-		{
-			cout << "Bitte gib eine g\x81ltige Zahl ein!" << endl;
-			system("pause");
-		}
-		else
-		{
-			switch (input.at(0))
-			{
-			case '1':
-				meinGraphErzeuger.setSignalListe(meinSignalListeErzeuger.erzeugeListe());
-				meineBibliothek.dateiAuswerten();
-				meinGraphErzeuger.setBibliothek(&meineBibliothek);
-				//Nur wenn ein gültiger Graph erzeugt werden kann, soll die Analyse ausgeführt werden
-				if (meinGraphErzeuger.erzeugeGraph())
-				{
-					meinLaufzeitAnalysator.setFaktoren(&meineFaktoren);
-					meinLaufzeitAnalysator.setStartElement(meinGraphErzeuger.getStartElement());
-					meinLaufzeitAnalysator.setFrequenz(meinSignalListeErzeuger.getFrequenz());
-					meinLaufzeitAnalysator.starteAnalyse();
-				}
-				break;
-			case '2':
-				goto ende;
-			default:
-				cout << "Bitte gib eine g\x81ltige Zahl ein" << endl;
-				system("pause");
-				break;
-			}
-		}
+		meinLaufzeitAnalysator.setFaktoren(&meineFaktoren);
+		meinLaufzeitAnalysator.setStartElement(meinGraphErzeuger.getStartElement());
+		meinLaufzeitAnalysator.setFrequenz(meinSignalListeErzeuger.getFrequenz());
+		meinLaufzeitAnalysator.starteAnalyse();
 	}
-ende:;
 }
 
 void Menue::menueKopf()
@@ -470,20 +438,20 @@ void Menue::menueKopf()
 	cout << "********************************************\n" << endl;
 }
 
-bool Menue::isNumber(string arg1)
+bool Menue::isNumber(string arg1)//Prüft, ob das Argument ein gültiger double ist
 {
 	try
 	{
-		boost::lexical_cast<double>(arg1);
+		boost::lexical_cast<double>(arg1);//Wandelt arg1 in einen double um. Dabei kann es zu einem Fehler kommen, wenn der string kein gültiger double ist
 		return true;
-	}catch(boost::bad_lexical_cast const&)
+	}catch(boost::bad_lexical_cast const&)//Nutzt die exception von boost, die geworfen wird, wenn lexical_cast nicht möglich ist
 	{
 		return false;
 	}
 	return false;
 }
 
-bool Menue::isShort(string arg1)
+bool Menue::isShort(string arg1)//Prüft, ob das Argument ein gültiger short ist
 {
 	try
 	{
@@ -496,57 +464,60 @@ bool Menue::isShort(string arg1)
 	return false;
 }
 
-bool Menue::readValuesFromDevice()
+bool Menue::readValuesFromDevice()//Versucht die Werte vom ITIV-Device zu lesen
 {
-	if (DevPtr != 0)
+	if (DevPtr != 0)//Ist das ITIV-Dev gestartet?
 	{
 		//Spannung messen
 		do
 		{
-			*((int*)(DevPtr->BaseAddress + CTRL_REG)) = 0x00000001;//channel setzen
-			while (*((int*)(DevPtr->BaseAddress + STAT_REG)) != 0x01000000)
+			*((int*)(DevPtr->BaseAddress + CTRL_REG)) = 0x00000001;	//Channel setzen
+			while (*((int*)(DevPtr->BaseAddress + STAT_REG)) != 0x01000000)	//Prüfe Bereitschaft des Gerätes
 			{
 				cout << *((int*)DevPtr->BaseAddress + STAT_REG) << " Geraet nicht bereit\n";
 			}
-			*((int*)(DevPtr->BaseAddress + CTRL_REG)) = 0x00000101;//starten mit gesetztem Channel
-			while (*((int*)(DevPtr->BaseAddress + STAT_REG)) == 0x00000100){
+			*((int*)(DevPtr->BaseAddress + CTRL_REG)) = 0x00000101;	//starten mit gesetztem Channel
+			while (*((int*)(DevPtr->BaseAddress + STAT_REG)) == 0x00000100)//Warten bis es nicht mehr busy ist
+			{ 
 				cout << "Geraet misst gerade\n"; 
 			} 
-		} while (*((int*)(DevPtr->BaseAddress + STAT_REG)) == 0x00010001);
+		} while (*((int*)(DevPtr->BaseAddress + STAT_REG)) == 0x00010001);//Die Messung wird solange wiederholt, wie es einen Fehler bei der Messung gibt
 		while (*((int*)(DevPtr->BaseAddress + STAT_REG)) != 0x00010000){} //nötig, da sonst zu schnell der Wert ausgelesen wird
-		meineFaktoren.setSpannung( *((double*)(DevPtr->BaseAddress + DATA_REG)) );
+		meineFaktoren.setSpannung( *((double*)(DevPtr->BaseAddress + DATA_REG)) );//Speichere den ermittelten Wert in den Variablen der Faktorenklasse
 
 		//Temperatur messsen
 		do
 		{
 			*((int*)(DevPtr->BaseAddress + CTRL_REG)) = 0x00000002;//channel setzen
-			while (*((int*)(DevPtr->BaseAddress + STAT_REG)) != 0x01000000)
+			while (*((int*)(DevPtr->BaseAddress + STAT_REG)) != 0x01000000)//Prüfe Bereitschaft des Gerätes
 			{
 				cout << *((int*)DevPtr->BaseAddress + STAT_REG) << " Geraet nicht bereit\n";
 			}
 			*((int*)(DevPtr->BaseAddress + CTRL_REG)) = 0x00000102;//starten mit gesetztem Channel
-			while (*((int*)(DevPtr->BaseAddress + STAT_REG)) == 0x00000100){
+			while (*((int*)(DevPtr->BaseAddress + STAT_REG)) == 0x00000100)//Warten bis es nicht mehr busy ist
+			{
 				cout << "Geraet misst gerade\n"; 
 			} 
-		} while (*((int*)(DevPtr->BaseAddress + STAT_REG)) == 0x00010001);
-		while (*((int*)(DevPtr->BaseAddress + STAT_REG)) != 0x00010000){}
-		meineFaktoren.setTemperatur( *((int*)(DevPtr->BaseAddress + DATA_REG)) );
+		} while (*((int*)(DevPtr->BaseAddress + STAT_REG)) == 0x00010001);//Die Messung wird solange wiederholt, wie es einen Fehler bei der Messung gibt
+		while (*((int*)(DevPtr->BaseAddress + STAT_REG)) != 0x00010000){}//nötig, da sonst zu schnell der Wert ausgelesen wird
+		meineFaktoren.setTemperatur( *((int*)(DevPtr->BaseAddress + DATA_REG)) );//Speichere den ermittelten Wert in den Variablen der Faktorenklasse
 
 		//Prozess setzen
 		do
 		{
 			*((int*)(DevPtr->BaseAddress + CTRL_REG)) = 0x00000003;//channel setzen
-			while (*((int*)(DevPtr->BaseAddress + STAT_REG)) != 0x01000000)
+			while (*((int*)(DevPtr->BaseAddress + STAT_REG)) != 0x01000000)//Prüfe Bereitschaft des Gerätes
 			{
 				cout << *((int*)DevPtr->BaseAddress + STAT_REG) << " Geraet nicht bereit\n";
 			}
 			*((int*)(DevPtr->BaseAddress + CTRL_REG)) = 0x00000103;//starten mit gesetztem Channel
-			while (*((int*)(DevPtr->BaseAddress + STAT_REG)) == 0x00000100){
+			while (*((int*)(DevPtr->BaseAddress + STAT_REG)) == 0x00000100)//Warten bis es nicht mehr busy ist
+			{
 				cout << "Geraet misst gerade\n"; 
 			} 
-		} while (*((int*)(DevPtr->BaseAddress + STAT_REG)) == 0x00010001);
-		while (*((int*)(DevPtr->BaseAddress + STAT_REG)) != 0x00010000){}
-		meineFaktoren.setProzess( *((int*)(DevPtr->BaseAddress + DATA_REG)) + 1 ); 
+		} while (*((int*)(DevPtr->BaseAddress + STAT_REG)) == 0x00010001);//Die Messung wird solange wiederholt, wie es einen Fehler bei der Messung gibt
+		while (*((int*)(DevPtr->BaseAddress + STAT_REG)) != 0x00010000){}//nötig, da sonst zu schnell der Wert ausgelesen wird
+		meineFaktoren.setProzess( *((int*)(DevPtr->BaseAddress + DATA_REG)) + 1 );//Speichere den ermittelten Wert in den Variablen der Faktorenklasse
 
 		return true;
 	}//Ende if-Geraet-angeschaltet
