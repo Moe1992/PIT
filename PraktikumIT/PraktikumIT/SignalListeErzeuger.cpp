@@ -78,58 +78,37 @@ Signal* SignalListeErzeuger::erzeugeListe(){					//liefert Zeiger auf Liste fall
 			while (zeile.find("END") == string::npos){
 				int doppelP = zeile.find(":");
 				int klammer = zeile.find("(");
+				int posAusgangssignal = zeile.rfind("s"); //Ausgangssignal sollte immer vorhanden sein
+
 				string gatterName = zeile.substr(0, 4);
 				string gatterTyp = zeile.substr(doppelP + 1, klammer - doppelP - 1);
-				//Gatter die nur zwei Eingangssignale haben(inv oder clock-Anschluss) 
-				if ((gatterTyp.find("inv") != string::npos) || (zeile.find("clk") != string::npos)){
-					zeile = zeile.substr(klammer + 2);
-					int e1;
-					if (zeile.substr(0, 2) == "lk"){
-						zeile = zeile.substr(zeile.find(",") + 2);
-						e1 = atoi(zeile.c_str());
-					}
-					else{
-						e1 = atoi(zeile.c_str());
-					}
-					zeile = zeile.substr(zeile.rfind(",") + 2);
-					int a1 = atoi(zeile.c_str());
 
-					signale[e1 - 1].zielHinzufuegen(gatterName, signale[e1 - 1].getAnzahlZiele());
-					signale[e1 - 1].incAnzahlZiele();
-					//Kurzschluss pruefen
-					if (signale[a1 - 1].getQuelle() != ""){
-						cout << endl << "Kurzschluss bei Signal s";
-						printf("%03d", a1);
-						cout << endl;
-						return NULL;
-					}
-					signale[a1 - 1].setQuelle(gatterName);
-					signale[a1 - 1].setQuellenTyp(gatterTyp);
+				//Ausgangssignal des Gatters verarbeiten
+				int a1 = atoi(zeile.substr(posAusgangssignal + 1).c_str());
+				//Kurzschluss pruefen
+				if (signale[a1 - 1].getQuelle() != ""){
+					cout << endl << "Kurzschluss bei Signal s";
+					printf("%03d", a1);
+					cout << endl;
+					return NULL;
 				}
-				//alle anderen Gatter
-				else{
-					zeile = zeile.substr(klammer + 2);
-					int e1 = atoi(zeile.c_str());
-					zeile = zeile.substr(zeile.find(",") + 2);
-					int e2 = atoi(zeile.c_str());
-					zeile = zeile.substr(zeile.find(",") + 2);
-					int a1 = atoi(zeile.c_str());
+				signale[a1 - 1].setQuelle(gatterName);
+				signale[a1 - 1].setQuellenTyp(gatterTyp);
+				zeile = zeile.substr(klammer + 1, posAusgangssignal - klammer - 1);//String enhaelt danach nur noch max zwei Eingangssignale
 
-
+				//Eingangssignale des Gatters verarbeiten
+				if (int pos1 = zeile.find("s") != string::npos){
+					int e1 = atoi(zeile.substr(pos1+1).c_str());
+					zeile = zeile.substr(pos1+3);		//String kuerzen
 					signale[e1 - 1].zielHinzufuegen(gatterName, signale[e1 - 1].getAnzahlZiele());
 					signale[e1 - 1].incAnzahlZiele();
+				}
+				if (int pos2 = zeile.find("s") != string::npos){
+					int e2 = atoi(zeile.substr(pos2 + 1).c_str());
 					signale[e2 - 1].zielHinzufuegen(gatterName, signale[e2 - 1].getAnzahlZiele());
 					signale[e2 - 1].incAnzahlZiele();
-					//Kurzschluss pruefen
-					if (signale[a1 - 1].getQuelle() != ""){
-						cout << endl << "Kurzschluss bei Signal s";
-							printf("%03d", a1); 
-						cout << endl;
-						return NULL;
-					}
-					signale[a1 - 1].setQuelle(gatterName);
-					signale[a1 - 1].setQuellenTyp(gatterTyp);
 				}
+				
 				getline(datei, zeile);
 			}
 			//Gatteranalyse Ende
@@ -169,7 +148,7 @@ void SignalListeErzeuger::ausgabeSignalListe(){
 				cout << signale[i].getZiel(j) << " ";
 			}
 			cout << endl;
-		} 
+		}
 	}
 
 }

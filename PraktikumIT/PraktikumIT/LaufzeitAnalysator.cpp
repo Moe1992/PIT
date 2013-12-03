@@ -50,7 +50,7 @@ void LaufzeitAnalysator::starteAnalyse()
 	if (uebergangspfad != "")
 	{
 		string name = uebergangspfad.substr(uebergangspfad.rfind("g"),4);
-		double setuptime = (double) getSchaltwerkElementByName(name)->getTyp()->getSetupTime(); 
+		setuptime = (double) getSchaltwerkElementByName(name)->getTyp()->getSetupTime(); 
 	}
 
 	double maxFreq = ((laufzeitUebergangspfad != 0) ? (1 / (laufzeitUebergangspfad + setuptime)) : -1); //[f]=[1/ps]
