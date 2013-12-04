@@ -190,13 +190,6 @@ void Menue::bibliothekMenue()
 			}
 		}
 	}
-	meineBibliothek.pfadEinlesen("bib.txt");
-	system("cls");
-	meineBibliothek.dateiAusgabe();
-	system("pause");
-	system("cls");
-	meineBibliothek.dateiAuswerten();
-	system("pause");
 ende:;
 }
 
