@@ -51,6 +51,7 @@ void Bibliothek::dateiAusgabe()
 	} else {
 		openError();
 	}
+	bib.close();
 	system("pause");
 }
 
