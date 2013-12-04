@@ -12,6 +12,7 @@ GatterTyp::~GatterTyp(void)
 {
 }
 
+//Einfache Set/Get-Befehle sind Selbsterklärend
 std::string GatterTyp::getName()
 {
 	return name;

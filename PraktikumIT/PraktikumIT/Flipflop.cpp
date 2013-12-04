@@ -10,6 +10,7 @@ Flipflop::~Flipflop(void)
 {
 }
 
+//Einfache Set/Get-Befehle sind Selbsterklärend
 bool Flipflop::getIsFlipflop()
 {
 	return 1;

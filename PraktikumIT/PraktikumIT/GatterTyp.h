@@ -18,6 +18,7 @@ public:
 	void setLastFaktor(short lf);
 	void setLastKapazitaet(short lk);
 	void setEingaenge(short ei);
+	//Durch die vererbung nötige Virtualmethoden
 	virtual short getSetupTime();
 	virtual void setSetupTime(short st);
 	virtual void setHoldTime(short ht);

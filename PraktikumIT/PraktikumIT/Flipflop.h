@@ -3,7 +3,7 @@
 #include "gattertyp.h"
 
 class Flipflop :
-	public GatterTyp
+	public GatterTyp //Klasse Flipflop erbt von Klasse GatterTyp
 {
 public:
 	Flipflop(void);

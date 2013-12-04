@@ -2,6 +2,7 @@
 
 using namespace std;
 
+//Konstruktor der Bibliotheksklasse mit Festlegung des Attributs "datei" (Speicherort der Bibliotheksdatei)
 Bibliothek::Bibliothek(string pfad)
 {
 	datei = pfad;
@@ -16,14 +17,16 @@ Bibliothek::~Bibliothek(void)
 {
 }
 
+//Einfache Set/Get-Befehle sind Selbsterklärend
 string Bibliothek::getPfad()
 {
 	return datei;
 }
 
+
 GatterTyp* Bibliothek::getBibElement(string typ)
 {
-	for(int i = 0 ; i < bibElemente.size(); i++)
+	for(int i = 0 ; i < bibElemente.size(); i++) //Vector bibElemente wird nach dem gesuchten Element durchsucht und dessen Adresse wird zurück gegeben
 	{
 		if(typ == bibElemente.at(i)->getName())
 		{
@@ -40,7 +43,7 @@ void Bibliothek::dateiAusgabe()
 	{
 		int zeilenNr = 1;
 		string zeile;
-		while(getline(bib,zeile))
+		while(getline(bib,zeile)) //Bibliotheksdatei wird zeilenweiße mit Zeilennummer ausgegeben
 		{
 			cout << zeilenNr << " " << zeile << endl;
 			zeilenNr++;
@@ -59,20 +62,20 @@ void Bibliothek::dateiAuswerten()
 	if(bib)
 	{
 		string zeile;
-		while(getline(bib,zeile))
+		while(getline(bib,zeile)) //Bibliotheksdatei wird zeilenweiße ausgelesen
 		{
-			if((zeile != "[[Bausteine]]") && (zeile.find("[") == 0))
+			if((zeile != "[[Bausteine]]") && (zeile.find("[") == 0)) //Die Zeile wird nach Namen und Eigenschaften durchsucht
 			{
 				int posEnd = zeile.find("]");
-				string temp = zeile.substr(1,posEnd-1);
-				if(temp != "dff")
+				string temp = zeile.substr(1,posEnd-1); //Wird ein Name gefunden, aber kein dff, wird ein GatterTyp-Element angelegt
+				if(temp != "dff")                       //Wird ein dff im Namen gefunden wird ein Flipflop-Element angelegt
 				{
 					bibElemente.push_back(new GatterTyp);
 				} else 
 				{
 					bibElemente.push_back(new Flipflop);
 				}
-				bibElemente.back()->setName(temp);
+				bibElemente.back()->setName(temp); //Wird eine Eigenschaft gefunden wird sie in das zuletzt erstellte Element gespeichert
 			} else if(zeile.find("ei:") == 0)
 			{
 				string temp = zeile.substr(3);
@@ -117,27 +120,30 @@ void Bibliothek::dateiAuswerten()
 			
 		}
 	}
-	if(bibElemente.size() == 0)
+	if(bibElemente.size() == 0) //Ist der vector nach der Abarbeitung leer wird ein Fehler ausgegeben
 	{
-		readError();
+		readError(); 
 	}
 	bib.close();
 }
 
 bool Bibliothek::pfadEinlesen(string pfad)
 {
-	datei = pfad;
-	ifstream bib(datei.c_str());
-	if(bib)
+	string tempDatei = pfad;
+	ifstream bib(tempDatei.c_str());
+	if(bib) //Die Datei wird testweiße geöffnet und bei Erfolg wird der neue Pfad gespeichert
 	{
 		bib.close();
+		datei = pfad;
 		return 1;
 	} else 
 	{
+		openError();
 		return 0;
 	}
 }
 
+//Fehlermeldungen beim Lesen oder Öffnen der Bibliotheksdatei
 void Bibliothek::openError()
 {
 	cout << "Die Datei konnte nicht geoeffnet werden" << endl;
