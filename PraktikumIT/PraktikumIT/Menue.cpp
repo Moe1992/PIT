@@ -495,7 +495,7 @@ bool Menue::readValuesFromDevice()//Versucht die Werte vom ITIV-Device zu lesen
 		while (*((int*)(DevPtr->BaseAddress + STAT_REG)) != 0x00010000){}//nötig, da sonst zu schnell der Wert ausgelesen wird
 		meineFaktoren.setTemperatur( *((int*)(DevPtr->BaseAddress + DATA_REG)) );//Speichere den ermittelten Wert in den Variablen der Faktorenklasse
 
-		//Prozess setzen
+		//Prozess messen
 		do
 		{
 			*((int*)(DevPtr->BaseAddress + CTRL_REG)) = 0x00000003;//channel setzen

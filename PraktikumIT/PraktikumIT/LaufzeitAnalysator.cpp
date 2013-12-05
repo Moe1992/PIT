@@ -143,16 +143,12 @@ void LaufzeitAnalysator::dfs_visit(SchaltwerkElement* k, SchaltwerkElement* s){
 		}
 		else if (DFS_Zwischenspeicher[v].PfadLaufzeit < (DFS_Zwischenspeicher[k].PfadLaufzeit + k->getLaufzeitEinzelgatter())){
 			if (((DFS_Zwischenspeicher[v].PfadLaufzeit != 0) || (v == s)) && (DFS_Zwischenspeicher[v].VaterElement != k)){
-				SchaltwerkElement* temp = DFS_Zwischenspeicher[v].VaterElement;
 				DFS_Zwischenspeicher[v].VaterElement = k;
 
 				if (zyklensuche(v)){		//zyklensuche
 					//fehler_wegen_zyklus();
 					cout << "Zyklus gefunden" << endl;
 					zyklus = true;
-					if (temp != NULL){
-						DFS_Zwischenspeicher[v].VaterElement = temp;	//?
-					}
 					break;
 				}
 			}

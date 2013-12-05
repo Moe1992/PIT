@@ -15,9 +15,17 @@ SignalListeErzeuger::~SignalListeErzeuger()
 bool SignalListeErzeuger::setPfad(string _dateipfad){			//liefert true falls Datei existiert und geoeffnet weden kann
 	ifstream datei(_dateipfad);
 	if (datei){
-		dateipfad = _dateipfad;
-		datei.close();
-		return true;
+		string temp;
+		while (getline(datei,temp))
+		{
+			if (temp.find("ARCHITECTURE")  != string::npos)
+			{
+				dateipfad = _dateipfad;
+				datei.close();
+				return true;
+			}
+		}
+		return false;
 	}
 	else{ return false; }
 }

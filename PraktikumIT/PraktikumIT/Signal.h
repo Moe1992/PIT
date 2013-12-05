@@ -47,10 +47,7 @@ public:
 private:
 	signalTypen signalTyp;
 	std::string quelle, quellenTyp;
-	std::string ziele[5];									//dynamisches Array verwenden? max 5 Ziele laut Aufgabe
+	std::string ziele[5];
 	int anzahlZiele;
-
-
-
 };
 

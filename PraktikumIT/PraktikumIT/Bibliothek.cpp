@@ -134,13 +134,21 @@ bool Bibliothek::pfadEinlesen(string pfad)
 	ifstream bib(tempDatei.c_str());
 	if(bib) //Die Datei wird testweiße geöffnet und bei Erfolg wird der neue Pfad gespeichert
 	{
-		bib.close();
-		datei = pfad;
-		return 1;
-	} else 
+		string temp;
+		while (getline(bib,temp))
+		{
+			if (temp.find("[[Bausteine]]")  != string::npos)
+			{
+				datei = pfad;
+				bib.close();
+				return true;
+			}
+		}
+		return false;
+	} else
 	{
 		openError();
-		return 0;
+		return false;
 	}
 }
 
